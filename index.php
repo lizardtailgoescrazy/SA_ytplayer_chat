@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $directURLFlag = false;
 if(isset($_SESSION["directURL"])){
 	$directURLFlag = true;

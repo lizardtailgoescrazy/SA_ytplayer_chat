@@ -4,7 +4,7 @@ $lengthOfID = 8;
 
 if(!isset($_SESSION["nick"]) || !isset($_SESSION["sno"])){
 	$_SESSION["directURL"] =  $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-	header("Location: http://localhost/yt"); 
+	header("Location: http://localhost/sugar"); 
 }
 else{
 $_SESSION["sid"] = $_SESSION["sno"];
@@ -67,7 +67,7 @@ unset($_SESSION["sno"]);
 			<tr>
 				<td style="text-align: center;">
 					<div id="ytplayer">...</div>
-					<div id="message"></div>
+					<div id="message">Initalizing...</div>
 					<div id="builder">
 							<input type="text" name="URLAdd" id="URLAdd" /><br><br>
 							<button onclick='addThings();'>Add to playlist</button>

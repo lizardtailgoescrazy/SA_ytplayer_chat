@@ -3,7 +3,7 @@ session_start();
 $nextDir = "session";
 if(rtrim($_POST["username"])==""){
     $_SESSION["errorUsr"]="Please enter a username !";
-    header("Location: http://localhost/yt");
+    header("Location: http://localhost/sugar");
 
 }
 else{
@@ -27,7 +27,7 @@ else{
     else{
     	if(rtrim($_POST["sessionURL"])==""){
             $_SESSION["errorURL"]="Please enter a session URL !";
-            header("Location: http://localhost/yt"); 
+            header("Location: http://localhost/sugar"); 
         }
         else{
             $URL = $_POST["sessionURL"];
