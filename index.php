@@ -14,11 +14,9 @@ if(isset($_SESSION["directURL"])){
 <head>
 	<meta charset="utf-8">
 	<title>Sugary Asphalt</title>
-
 	<link rel="icon" type="image/png" href="res/icon.png" >
 	<link type="text/css" rel="stylesheet" href="style/main.css" />
 	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 	<script type="text/javascript">
 		function checkForJoin(){
 			if($("#username").val() == ""){
@@ -71,6 +69,10 @@ if(isset($_SESSION["directURL"])){
 			<input type="submit" name="sessionJoin" onclick="return checkForJoin();"  value="Join this session" ></input>
 		</form>
 	</div>
+	<!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 </body>
 
 
