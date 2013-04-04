@@ -3,11 +3,15 @@ body{
 	font-family: 'Noto Sans', sans-serif;
 	color: black;
 	text-outline: 2px 2px white;
-	background: black url(../res/bg3.png) fixed center no-repeat;
+	/*background: black url(../res/bg3.png) fixed center no-repeat;
 	-moz-background-size: 100% 100%;
 	-o-background-size: 100% 100%;
 	-webkit-background-size: 100% 100%; 
-	background-size: 100% 100%;
+	background-size: 100% 100%;*/
+	/*
+	* Adding subtle background
+	*/
+	background: url(../res/noisy_net.png);
 }
 
 h2{
@@ -38,7 +42,7 @@ hr{
 
 #sessionStuff input[type="text"]{
 	width: 80%;
-	font-size: 1.25em;
+	/*font-size: 1.25em;*/
 	padding: 0.5em;
 }
 
@@ -151,4 +155,28 @@ table tr td{
 
 table {
 	width: 96%;
+}
+
+/* Custom container */
+.container-narrow {
+	margin: 0 auto;
+	max-width: 700px;
+}
+.container-narrow > hr {
+	margin: 30px 0;
+}
+
+/* Main box and buttons */
+.jumbotron {
+	margin: 60px 0;
+	text-align: center;
+	padding: 20px;
+	background: url(../res/debut_light.png);
+}
+.jumbotron h1 {
+	font-size: 72px;
+	line-height: 1;
+}
+.jumbotron .btn {
+	padding: 8px 8px;
 }

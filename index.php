@@ -16,6 +16,8 @@ if(isset($_SESSION["directURL"])){
 	<title>Sugary Asphalt</title>
 	<link rel="icon" type="image/png" href="res/icon.png" >
 	<link type="text/css" rel="stylesheet" href="style/main.css" />
+	<link href="style/bootstrap.css" rel="stylesheet">
+    <link href="style/bootstrap-responsive.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 	<script type="text/javascript">
 		function checkForJoin(){
@@ -45,29 +47,38 @@ if(isset($_SESSION["directURL"])){
 </head>
 
 <body>
-	<div id="content">
-		<h2>Sugary Asphalt</h2>
-		<?php if(isset($_SESSION["errorUsr"])){
-			print("<div id=\"errorSpace\">");
-			print("**".$_SESSION["errorUsr"]);
-			print("</div>");
-			unset($_SESSION["errorUsr"]);
-		} ?>
-		<form id="sessionStuff" method="POST" action="sessionSetup.php">
-			<input type="text" name="username" id="username" placeholder="Please enter a username..."></input><br><hr>
-			<?php if($directURLFlag == false){ ?>
-			<input type="submit" name="sessionStart" id="sessionStart" onclick="return checkForNew();" value="Start a new session" ></input><br><hr>
-			<?php } ?>
-			<?php if(isset($_SESSION["errorURL"])){
+	<div class="container-narrow">
+		<div class="jumbotron">
+			<h2>Sugary Asphalt</h2>
+			<?php if(isset($_SESSION["errorUsr"])){
 				print("<div id=\"errorSpace\">");
-				print("**".$_SESSION["errorURL"]);
+				print("**".$_SESSION["errorUsr"]);
 				print("</div>");
-				unset($_SESSION["errorURL"]);
+				unset($_SESSION["errorUsr"]);
 			} ?>
-
-			<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input><br><br>
-			<input type="submit" name="sessionJoin" onclick="return checkForJoin();"  value="Join this session" ></input>
-		</form>
+			<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
+				<div class="control-group">
+					<input type="text" name="username" id="username" placeholder="pick a username"></input>
+				</div>
+				<?php if($directURLFlag == false){ ?>
+				<div class="control-group">
+					<button class="btn" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new session</button>
+				</div>
+				<?php } ?>
+				<?php if(isset($_SESSION["errorURL"])){
+					print("<div id=\"errorSpace\">");
+					print("**".$_SESSION["errorURL"]);
+					print("</div>");
+					unset($_SESSION["errorURL"]);
+				} ?>
+				<div class="control-group">
+					<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
+				</div>
+				<div class="control-group">
+					<button class="btn" type="submit" onClick="return checkForJoin();" value="Join this session" name="sessionJoin">Join session</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	<!-- Le javascript
     ================================================== -->
