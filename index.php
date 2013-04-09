@@ -18,40 +18,14 @@ if(isset($_SESSION["directURL"])){
 	<link type="text/css" rel="stylesheet" href="style/main.css" />
 	<link href="style/bootstrap.css" rel="stylesheet">
     <link href="style/bootstrap-responsive.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-	<script type="text/javascript">
-		function checkForJoin(){
-			if($("#username").val() == ""){
-				alert("Please enter a username.");
-				return false;
-			}
-			if($("#sessionURL").val() == ""){
-				alert("Please enter a session URL.");
-				return false;
-			}
-
-			return true;
-		}
-
-		function checkForNew(){
-			if($("#username").val() == ""){
-				alert("Please enter a username.");
-				return false;
-			}
-			return true;
-		}
-
-	</script>
-
-
 </head>
 
 <body>
 	<div class="container-narrow">
-		<div class="jumbotron">
-			<h2>Sugary Asphalt</h2>
+		<div class="jumbotron jumbotron_margin">
+			<img src="res/logo_128.png" />
 			<?php if(isset($_SESSION["errorUsr"])){
-				print("<div id=\"errorSpace\">");
+				print("<div class=\"errorSpace\">");
 				print("**".$_SESSION["errorUsr"]);
 				print("</div>");
 				unset($_SESSION["errorUsr"]);
@@ -66,16 +40,16 @@ if(isset($_SESSION["directURL"])){
 				</div>
 				<?php } ?>
 				<?php if(isset($_SESSION["errorURL"])){
-					print("<div id=\"errorSpace\">");
+					print("<span class=\"errorSpace\">");
 					print("**".$_SESSION["errorURL"]);
-					print("</div>");
+					print("</span>");
 					unset($_SESSION["errorURL"]);
 				} ?>
 				<div class="control-group">
 					<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
 				</div>
 				<div class="control-group">
-					<button class="btn" type="submit" onClick="return checkForJoin();" value="Join this session" name="sessionJoin">Join session</button>
+					<button class="btn" type="submit" onClick="return checkForJoin();" name="sessionJoin">Join this session</button>
 				</div>
 			</form>
 		</div>
@@ -84,6 +58,47 @@ if(isset($_SESSION["directURL"])){
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		function trimStuff (str) {
+		    str = str.replace(/^\s+/, '');
+		    for (var i = str.length - 1; i >= 0; i--) {
+		        if (/\S/.test(str.charAt(i))) {
+		            str = str.substring(0, i + 1);
+		            break;
+		        }
+		    }
+		    return str;
+		}
+
+		function checkForJoin(){
+			if(trimStuff($("#username").val()) == ""){
+				$("#username").val("");
+				alert("Please enter a username.");
+				$("#username").focus();
+				return false;
+			}
+			if(trimStuff($("#sessionURL").val()) == ""){
+				$("#sessionURL").val("");
+				alert("Please enter a session URL.");
+				$("#sessionURL").focus();
+				return false;
+			}
+
+			return true;
+		}
+
+		function checkForNew(){
+			if(trimStuff($("#username").val()) == ""){
+				$("#username").val("");
+				alert("Please enter a username.");
+				$("#username").focus();
+				return false;
+			}
+			return true;
+		}
+
+	</script>
 </body>
 
 

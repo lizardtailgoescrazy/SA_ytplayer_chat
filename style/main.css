@@ -3,14 +3,6 @@ body{
 	font-family: 'Noto Sans', sans-serif;
 	color: black;
 	text-outline: 2px 2px white;
-	/*background: black url(../res/bg3.png) fixed center no-repeat;
-	-moz-background-size: 100% 100%;
-	-o-background-size: 100% 100%;
-	-webkit-background-size: 100% 100%; 
-	background-size: 100% 100%;*/
-	/*
-	* Adding subtle background
-	*/
 	background: url(../res/noisy_net.png);
 }
 
@@ -28,8 +20,6 @@ hr{
 	min-width: 720px;
 	padding: 25px;
 	margin: auto;
-	background: rgba(255,255,255,0.6);
-	border-radius: 25px;
 }
 
 #sessionStuff{
@@ -44,41 +34,6 @@ hr{
 	width: 80%;
 	/*font-size: 1.25em;*/
 	padding: 0.5em;
-}
-
-#sessionStuff input[type="submit"]{
-	-moz-box-shadow:inset 0px 2px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 2px 0px 0px #ffffff;
-	box-shadow:inset 0px 2px 0px 0px #ffffff;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e9e9e9) );
-	background:-moz-linear-gradient( center top, #f9f9f9 5%, #e9e9e9 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9');
-	background-color:#f9f9f9;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	border-radius:5px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	width: 80%;
-	color:#666666;
-	font-family: 'Noto Sans', sans-serif;
-	font-size:2em;
-	font-weight:bold;
-	padding:7px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #ffffff;
-}
-
-#sessionStuff input[type="submit"]:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9) );
-	background:-moz-linear-gradient( center top, #e9e9e9 5%, #f9f9f9 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#f9f9f9');
-	background-color:#e9e9e9;
-}
-
-#sessionStuff input[type="submit"]:active {
-	position:relative;
-	top:1px;
 }
 
 #messageBoard #board{
@@ -106,42 +61,7 @@ hr{
 
 #builder input[type="text"]{
 	width: 80%;
-	padding: 1em;
-}
-
-#builder button{
-	-moz-box-shadow:inset 0px 2px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 2px 0px 0px #ffffff;
-	box-shadow:inset 0px 2px 0px 0px #ffffff;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e9e9e9) );
-	background:-moz-linear-gradient( center top, #f9f9f9 5%, #e9e9e9 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9');
-	background-color:#f9f9f9;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	border-radius:5px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	width: 80%;
-	color:#666666;
-	font-family: 'Noto Sans', sans-serif;
-	font-size:2em;
-	font-weight:bold;
-	padding:7px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #ffffff;
-}
-
-#builder button:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9) );
-	background:-moz-linear-gradient( center top, #e9e9e9 5%, #f9f9f9 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#f9f9f9');
-	background-color:#e9e9e9;
-}
-
-#builder button:active {
-	position:relative;
-	top:1px;
+	padding: 0.5em;
 }
 
 #message{
@@ -168,10 +88,13 @@ table {
 
 /* Main box and buttons */
 .jumbotron {
-	margin: 60px 0;
 	text-align: center;
 	padding: 20px;
 	background: url(../res/debut_light.png);
+}
+
+.jumbotron_margin {
+	margin: 60px 0;
 }
 .jumbotron h1 {
 	font-size: 72px;
@@ -179,4 +102,15 @@ table {
 }
 .jumbotron .btn {
 	padding: 8px 8px;
+}
+
+.table_25_75 tr td:first-child{
+	width: 25%;
+}
+.table_25_75 tr td:last-child{
+	width: 75%;
+}
+
+.errorSpace{
+	color: red;
 }

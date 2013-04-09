@@ -20,7 +20,8 @@ unset($_SESSION["sno"]);
 
 	<link rel="icon" type="image/png" href="../res/icon.png" >
 	<link type="text/css" rel="stylesheet" href="../style/main.css" />
-	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+	<link href="../style/bootstrap.css" rel="stylesheet">
+    <link href="../style/bootstrap-responsive.css" rel="stylesheet">
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="stuff.js"></script>
@@ -39,10 +40,9 @@ unset($_SESSION["sno"]);
 			var connection = new WebSocket('ws://54.244.117.108:1337');
 
 			connection.onopen = function () {
-				// first we want users to enter their names
+				//enable and clear chatbox
 				$("#chatBox").removeAttr('disabled');
 				$("#chatBox").val("");
-				//status.text('Choose name:');
 				var msg = {
 				    type: "setup",
 				    id: <?php print("\"".$_GET["id"]."\""); ?>,
@@ -60,33 +60,45 @@ unset($_SESSION["sno"]);
 		<script type="text/javascript" src="chatStuff.js"></script>
 </head>
 <body>
-	<div id="content">
-		<h3 id="username">Logged in as: <?php echo $_SESSION["nick"]; ?></h3>
-		<h3 id="sessionURL">Session URL: <?php echo $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?></h3>
-		<table>
-			<tr>
-				<td style="text-align: center;">
-					<div id="ytplayer">...</div>
-					<div id="message">Initalizing...</div>
-					<div id="builder">
-							<input type="text" name="URLAdd" id="URLAdd" /><br><br>
-							<button onclick='addThings();'>Add to playlist</button>
-					</div>
+	<div id="content" >
+		<div class="jumbotron">
+			<!-- Heading banner table str -->
+			<table class="table_25_75">
+				<tr>
+					<td>
+						<img src="../res/logo_64.png" />
+					</td>
+					<td>
+						<h3 id="sessionURL">Session URL: <?php echo "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?></h3>
+					</td>
+				</tr>
+			</table>
+			<!-- Heading content table str -->
+			<table>
+				<tr>
+					<!-- Youtube stuffs -->
+					<td style="text-align: center;">
+						<div id="ytplayer">...</div>
+						<div id="message">Initalizing...</div>
+						<div id="builder">
+								<input type="text" name="URLAdd" id="URLAdd" /><br><br>
+								<button class="btn" onclick='addThings();'>Add to playlist</button>
+						</div>
+						<div id="videoDetails">&nbsp</div>
+					</td>
+					<!-- Chat stuffs -->
+					<td>
+						<div id="messageBoard">
+							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
+								<div id="board">
+
+								</div>
+								<input type="text" id="chatBox" cols=2 placeholder="write message here...." value="Connecting to chat server..." disabled="disabled" />
+							</form>
+						</div>
 				</td>
-				<td>
-					<div id="messageBoard">
-						<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
-							<div id="board">
-
-							</div>
-							<input type="text" id="chatBox" cols=2 placeholder="write message here...." disabled="disabled" />
-						</form>
-					</div>
-
-
-
-				</td>
-	</div> 
+		</div> 
+	</div>
 
 	
 

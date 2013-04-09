@@ -135,11 +135,18 @@ function addThings(){
 		if(alsoTemp[n][0] == 'v'&& alsoTemp[n][1] == '='){
 			var vID = alsoTemp[n].substring(2, 13);
 			//$("#temp").html($("#temp").html()+vID+"<br>");
+	        $.ajax({
+	                url: "http://gdata.youtube.com/feeds/api/videos/"+vID+"?v=2&alt=json",
+	                dataType: "jsonp",
+	                success: function (data){ 
+	                							var title = data.entry.title.$t;
+                								$("#videoDetails").val("You just added "+title+" to the playlist !"); }
+	        								});
 			$.ajax({
 				url: "build.php?vid="+vID,
 				cache: false,
 				success: function(response){
-				  	},
+				  	}
 			});
 			break;
 		}

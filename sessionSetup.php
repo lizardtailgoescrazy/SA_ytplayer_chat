@@ -31,6 +31,9 @@ else{
         }
         else{
             $URL = $_POST["sessionURL"];
+            //Without URL rewriting
+
+            
             $temp = explode("?", $URL);
             $temp = explode("&", $temp[1]);
 
@@ -38,15 +41,51 @@ else{
                 if($arg[0]=='i' && $arg[1]=='d' && $arg[2] == '='){
                     $_SESSION["sno"] = substr($arg, 3);
                     print($_SESSION["sno"]);
-                    //Check if dir exists
-                    header( "Location: $nextDir?id=".$_SESSION["sno"]);
+
+                    if(!is_dir($nextDir."/".$_SESSION["sno"])){
+                        $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
+                        header("Location: http://localhost/sugar"); 
+                    }
+                    else{
+                        header( "Location: $nextDir?id=".$_SESSION["sno"]);
+                    }
                     break;
                 }
             }
+            //If you reach here invalid session URL
+
+            
+            //With URL rewriting
+            /*
+            $URL = str_replace('\\', '/', $URL);
+            $temp = explode("/", $URL);
+            $i = 0;
+            foreach($temp as &$arg){
+                if($arg == $nextDir){
+                    break;
+                }
+                $i++;
+            }
+            if($i >= sizeof($temp)){
+                $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
+                header("Location: http://localhost/sugar"); 
+            }
+            else{
+
+                $_SESSION["sno"] = $temp[$i+1];
+
+                if(!is_dir($nextDir."/".$_SESSION["sno"])){
+                    $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
+                    header("Location: http://localhost/sugar"); 
+                }
+                else{
+                    header( "Location: $nextDir/".$_SESSION["sno"]);
+                }
+                
+            }  */         
         }
     }
 }
-
 
 
 ?>
