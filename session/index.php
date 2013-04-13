@@ -18,22 +18,19 @@ unset($_SESSION["sno"]);
 
 	<title>Sugary Asphalt</title>
 
-	<link rel="icon" type="image/png" href="../res/icon.png" >
+	<link rel="icon" type="image/png" href="../res/favicon.png" >
 	<link type="text/css" rel="stylesheet" href="../style/main.css" />
 	<link href="../style/bootstrap.css" rel="stylesheet">
     <link href="../style/bootstrap-responsive.css" rel="stylesheet">
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
-	<script type="text/javascript" src="stuff.js"></script>
+	<script type="text/javascript" src="../js/helper.js"></script>
+	<!-- Javascript stuff -->
 	<script type="text/javascript">
-			// Check if browser supports WebSockets
-			window.WebSocket = window.WebSocket || window.MozWebSocket;
-
-			// if browser doesn't support WebSocket
-			if (!window.WebSocket) {
-				$("#board").html($('<p>', { text: 'Sorry, but your browser doesn\'t '
-					+ 'support WebSockets.'} ));
+			if (checkForWebsockets() == false){
+				$("#board").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. You will be unable to use the chat but the YouTube player will still work !</b></p>");
 				$("#chatBox").hide();
+				$("#board").attr('disabled', 'disabled');
 			}
 
 			// open connection
@@ -53,11 +50,12 @@ unset($_SESSION["sno"]);
 			};
 
 			connection.onerror = function (error) {
-				content.html($('<p>', { text: 'Sorry, but there\'s some problem with the connection or the server is down.</p>' } ));
+				$("#board").html("<p class='errorSpace'><b>Sorry, unable to contact the chat server.</b></p>");
 			};
 		</script>
 
-		<script type="text/javascript" src="chatStuff.js"></script>
+		<script type="text/javascript" src="../js/websocketStuff.js"></script>
+	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
 </head>
 <body>
 	<div id="content" >
@@ -66,7 +64,7 @@ unset($_SESSION["sno"]);
 			<table class="table_25_75">
 				<tr>
 					<td>
-						<img src="../res/logo_64.png" />
+						<img src="../res/logo_32.png" />
 					</td>
 					<td>
 						<h3 id="sessionURL">Session URL: <?php echo "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?></h3>
@@ -78,13 +76,23 @@ unset($_SESSION["sno"]);
 				<tr>
 					<!-- Youtube stuffs -->
 					<td style="text-align: center;">
-						<div id="ytplayer">...</div>
+						<div id="bubble">
+							<div id="ytplayer">...</div>
+							<div id="controls" class="margin_1em">
+								<span unselectable="on" id="vol_up" class="vol_controls">&nbsp&nbsp+&nbsp&nbsp</span>
+								<span unselectable="on">vol: </span>
+								<span unselectable="on" id="vol_value">100%</span>
+								<span unselectable="on" id="vol_down" class="vol_controls">&nbsp&nbsp-&nbsp&nbsp</span>
+								<span unselectable="on">&nbsp&nbsp&nbsp&nbsp</span>
+								<span unselectable="on" id="vol_mute" class="vol_controls">&nbspmute&nbsp</span>
+							</div>
+						</div>
 						<div id="message">Initalizing...</div>
 						<div id="builder">
-								<input type="text" name="URLAdd" id="URLAdd" /><br><br>
-								<button class="btn" onclick='addThings();'>Add to playlist</button>
+								<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." /><br><br>
+								<button id="playlistBuilder" class="btn" onclick='addThings();' disabled="disabled">Initalizing...</button>
 						</div>
-						<div id="videoDetails">&nbsp</div>
+						<div id="videoDetails" class="margin_1em">&nbsp</div>
 					</td>
 					<!-- Chat stuffs -->
 					<td>
@@ -93,15 +101,12 @@ unset($_SESSION["sno"]);
 								<div id="board">
 
 								</div>
-								<input type="text" id="chatBox" cols=2 placeholder="write message here...." value="Connecting to chat server..." disabled="disabled" />
+								<input type="text" id="chatBox" cols=2 placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" />
 							</form>
 						</div>
 				</td>
 		</div> 
 	</div>
-
-	
-
 </body>
 </html>
 

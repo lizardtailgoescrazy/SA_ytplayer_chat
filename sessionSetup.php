@@ -9,6 +9,7 @@ if(rtrim($_POST["username"])==""){
 else{
     $_SESSION["nick"] = $_POST["username"];
 
+    /*Starting new session*/
     if(isset($_POST['sessionStart'])){
     	$lengthOfID = 8;
     	//print("Starting a new session.");
@@ -20,10 +21,12 @@ else{
         mkdir($nextDir."/".$randomString, 0777);
         file_put_contents($nextDir."/".$randomString."/no", 0, LOCK_EX);
         file_put_contents($nextDir."/".$randomString."/currentlyPlaying", 0, LOCK_EX);
+        file_put_contents($nextDir."/".$randomString."/peopleHere", 1, LOCK_EX);
         $_SESSION["sno"] = $randomString;
         //print("<br>Your session Id is $randomString.");
         header( "Location: $nextDir?id=".$_SESSION["sno"]);
     }
+    /*Joining existing session*/
     else{
     	if(rtrim($_POST["sessionURL"])==""){
             $_SESSION["errorURL"]="Please enter a session URL !";
@@ -47,6 +50,9 @@ else{
                         header("Location: http://localhost/sugar"); 
                     }
                     else{
+                        $pplHere = file_get_contents($nextDir."/".$_SESSION["sno"]."/peopleHere", LOCK_EX);
+                        $pplHere++;
+                        file_put_contents($nextDir."/".$_SESSION["sno"]."/peopleHere", $pplHere, LOCK_EX);
                         header( "Location: $nextDir?id=".$_SESSION["sno"]);
                     }
                     break;

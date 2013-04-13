@@ -56,6 +56,7 @@ hr{
 
 #ytplayer{
 	width: 96%;
+	height: 320px;
 	text-align: center;
 }
 
@@ -67,6 +68,28 @@ hr{
 #message{
 	text-align: center;
 	padding: 1em;
+}
+
+#menuStuff ul{
+	list-style-type:none;
+	margin:0;
+	padding:auto;
+	overflow:hidden;
+}
+
+#menuStuff ul li{
+	margin: 1em 1em;
+	float:left;
+	display:block;
+	padding: 1em 3em;
+	border-radius: 0.5em;
+	background: url(../res/noisy_net.png);
+	color: gray;
+}
+
+#menuStuff ul li:hover{
+	background-color:#111262;
+	color: gray;
 }
 
 table tr td{
@@ -102,6 +125,26 @@ table {
 }
 .jumbotron .btn {
 	padding: 8px 8px;
+}
+
+.vol_controls{
+	font-size: 1.25em;
+	padding: .25em;
+	border: solid 3px gray;
+	border-radius: .25em;
+	cursor: pointer;
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
+}
+
+/*Helper CSS*/
+.margin_1em{
+	margin: 1em;
 }
 
 .table_25_75 tr td:first-child{
