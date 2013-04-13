@@ -70,26 +70,15 @@ hr{
 	padding: 1em;
 }
 
-#menuStuff ul{
-	list-style-type:none;
-	margin:0;
-	padding:auto;
-	overflow:hidden;
-}
-
-#menuStuff ul li{
-	margin: 1em 1em;
-	float:left;
-	display:block;
-	padding: 1em 3em;
-	border-radius: 0.5em;
-	background: url(../res/noisy_net.png);
-	color: gray;
-}
-
-#menuStuff ul li:hover{
-	background-color:#111262;
-	color: gray;
+#searchStuff {
+	z-index: 10000;
+	filter: alpha(opacity=50); /*older IE*/
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); /* IE */
+	-moz-opacity: .50; /*older Mozilla*/
+	-khtml-opacity: 0.5;   /*older Safari*/
+	opacity: 0.5;   /*supported by current Mozilla, Safari, and Opera*/
+	background-color:#000000;
+	position:fixed; top:0px; left:0px; width:100%; height:100%; color:#FFFFFF; text-align:center; vertical-align:middle;
 }
 
 table tr td{
@@ -140,6 +129,12 @@ table {
 	/* Rules below not implemented in browsers yet */
 	-o-user-select: none;
 	user-select: none;
+}
+
+
+.vol_controls:hover{
+	border: solid 3px #c4302b;
+	color: #c4302b;
 }
 
 /*Helper CSS*/

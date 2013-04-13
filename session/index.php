@@ -71,6 +71,7 @@ unset($_SESSION["sno"]);
 					</td>
 				</tr>
 			</table>
+			<div id="searchStuff" style="display: none;"></div>
 			<!-- Heading content table str -->
 			<table>
 				<tr>
@@ -91,6 +92,7 @@ unset($_SESSION["sno"]);
 						<div id="builder">
 								<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." /><br><br>
 								<button id="playlistBuilder" class="btn" onclick='addThings();' disabled="disabled">Initalizing...</button>
+								<button id="searchButton" class="btn" onclick='searchThings();' >Search for a video</button>
 						</div>
 						<div id="videoDetails" class="margin_1em">&nbsp</div>
 					</td>

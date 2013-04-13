@@ -28,44 +28,9 @@ $(window).unload(function() {
 	});
 });
 
-// Load the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/player_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-// Replace the 'ytplayer' element with an <iframe> and
-// YouTube player after the API code downloads.
-function onYouTubePlayerAPIReady() {
-	checkPlaylist = setInterval(doThings, 2000);
-	$("#playlistBuilder").html("Add to Playlist");
-	$("#playlistBuilder").removeAttr("disabled");
-
-}
-
-function readForNext(){
-	seek = -1;
-	$.ajax({
-		url: "read_file.php?mode=next",
-		cache: false,
-		success: function(response){
-			if(response == "ERROR_1"){
-					$("#message").html("Nothing to play yet...!");
-			}
-			else if(response == "ERROR_2"){
-				$("#message").html("Playlist finished, please add more videos...!");
-			}
-			else{
-				$("#message").html("");
-				var bit = response.split(';');
-				currentlyPlaying = bit[1];
-				player.loadVideoById( currentlyPlaying, 0, "small");
-				clearInterval(getNext);
-			}						
-	  	},
-	});
-}
-
 $(document).ready(function(){
+	$("#board").height(($(window).height())*0.67);
+
 	/*Make controls live*/
 	$("#vol_up").click( function(){
 		if(player){
@@ -101,6 +66,43 @@ $(document).ready(function(){
 		}
 	});
 });
+
+// Load the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/player_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+// Replace the 'ytplayer' element with an <iframe> and
+// YouTube player after the API code downloads.
+function onYouTubePlayerAPIReady() {
+	checkPlaylist = setInterval(doThings, 2000);
+	$("#playlistBuilder").html("Add URL to Playlist");
+	$("#playlistBuilder").removeAttr("disabled");
+
+}
+
+function readForNext(){
+	seek = -1;
+	$.ajax({
+		url: "read_file.php?mode=next",
+		cache: false,
+		success: function(response){
+			if(response == "ERROR_1"){
+					$("#message").html("Nothing to play yet...!");
+			}
+			else if(response == "ERROR_2"){
+				$("#message").html("Playlist finished, please add more videos...!");
+			}
+			else{
+				$("#message").html("");
+				var bit = response.split(';');
+				currentlyPlaying = bit[1];
+				player.loadVideoById( currentlyPlaying, 0, "small");
+				clearInterval(getNext);
+			}						
+	  	},
+	});
+}
 
 function onPlayerStateChange(newState) {
 	//alert(player.getPlayerState());
@@ -182,22 +184,40 @@ function addThings(){
 			if(alsoTemp[n][0] == 'v'&& alsoTemp[n][1] == '='){
 				var vID = alsoTemp[n].substring(2, 13);
 				//NEED TO broadcast video title added
-		        $.ajax({
-		                url: "http://gdata.youtube.com/feeds/api/videos/"+vID+"?v=2&alt=json",
-		                dataType: "jsonp",
-		                success: function (data){ 
-		                							var title = data.entry.title.$t;
-	                								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
-	                							}
-		        		});
 				$.ajax({
 					url: "build.php?vid="+vID,
 					cache: false,
 					success: function(response){
 					  	}
 				});
-				break;
+				var title = "";
+		        $.ajax({
+		                url: "http://gdata.youtube.com/feeds/api/videos/"+vID+"?v=2&alt=json",
+		                dataType: "jsonp",
+		                success: function (data){ 
+		                							title = data.entry.title.$t;
+        											var msg = {
+													    type: "ytplayer",
+													    name: title
+													};
+													connection.send(JSON.stringify(msg));
+	                								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
+	                							}
+		        		});
 			}
 		}
     }
+}
+
+function searchThings(){
+	var searchStuff = $("#searchStuff");
+	if($("#searchStuff").css('display') == "none"){
+		$("#searchStuff").css('display', "");
+		$("#searchStuff").html("<p>some stuff comes here !</p>");
+	}
+	else{
+		$("#searchStuff").css('display', "none");
+		$("#searchStuff").html("");
+	}
+	return false;
 }
