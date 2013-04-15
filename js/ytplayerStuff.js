@@ -144,8 +144,8 @@ function doThings(){
 				seek = parseInt(bit[0]);
 				currentlyPlaying = bit[1];		
 				player = new YT.Player('ytplayer', {
-					   height: '320',
-					   width: '520',
+					   height: '200',
+					   width: '325',
 					   videoId: currentlyPlaying,
 					   playerVars: {
 					   	autoplay: '1',

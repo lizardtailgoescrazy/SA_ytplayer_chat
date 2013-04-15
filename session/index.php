@@ -56,6 +56,7 @@ unset($_SESSION["sno"]);
 
 		<script type="text/javascript" src="../js/websocketStuff.js"></script>
 	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
+	<script type="text/javascript" src="../js/overlay.js"></script>
 </head>
 <body>
 	<div id="content" >
