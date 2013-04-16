@@ -15,9 +15,6 @@ $(function () {
 	var input = $('#chatBox');
 	//var status = $('#status');
 
-	// my color assigned by the server
-	var myColor = false;
-
 	//On incoming message
 	connection.onmessage = function (message) {
 		// Parse JSON object
@@ -30,11 +27,7 @@ $(function () {
 		}
 
 		if (json.type === 'color') { 
-			// first response from the server with user's color
-			myColor = json.data;
-			//status.text(myName + ': ').css('color', myColor);
-			input.removeAttr('disabled').focus();
-			// from now user can start sending messages
+			//Removed this feature, no use, extra processing
 		} 
 		//History is unimplemented as of now
 		//else if (json.type === 'history') { 
@@ -48,6 +41,19 @@ $(function () {
 			input.removeAttr('disabled'); // let the user write another message
 			writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
 		} 
+		else if (json.type === 'ytplayer') { 
+			if(playlistState === "ERROR_1" || playlistState === "ERROR_2"){
+				if(player){
+					//Player already intiated
+					readForNext();
+				}
+				else{
+					//Player un-intiated
+					doThings();
+				}
+			}
+			writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+		}
 		else {
 			console.log('Incompatible JSON: ', json);
 		}
