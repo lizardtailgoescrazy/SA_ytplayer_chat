@@ -1,5 +1,4 @@
 var tempee = 1;
-var checkPlaylist;
 var player;
 var currentlyPlaying;
 var getNext;
@@ -29,8 +28,7 @@ $(window).unload(function() {
 });
 
 $(document).ready(function(){
-	$("#board").height(($(window).height())*0.67);
-
+	$("#board").height(($(window).height())*0.63);
 	/*Make controls live*/
 	$("#vol_up").click( function(){
 		if(player){
@@ -72,33 +70,50 @@ var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/player_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 // Replace the 'ytplayer' element with an <iframe> and
 // YouTube player after the API code downloads.
 function onYouTubePlayerAPIReady() {
-	checkPlaylist = setInterval(doThings, 2000);
+	if(canWebsocket){
+		console.log("Running dothings only once because websockets are enabled");
+		doThings();
+	}
+	else{
+		console.log("Running dothings on repeat because websockets are disabled");
+		checkPlaylist = setInterval(doThings, 2000);
+	}
 	$("#playlistBuilder").html("Add URL to Playlist");
 	$("#playlistBuilder").removeAttr("disabled");
-
+	$("#searchButton").html("Search for Video");
+	$("#searchButton").removeAttr("disabled");
+	$("#URLAdd").removeAttr("disabled");
+	
 }
 
 function readForNext(){
+	console.log("This is the readForNext function");
 	seek = -1;
 	$.ajax({
 		url: "read_file.php?mode=next",
 		cache: false,
 		success: function(response){
 			if(response == "ERROR_1"){
-					$("#message").html("Nothing to play yet...!");
+				$("#message").html("Nothing to play yet...!");
+				playlistState = "ERROR_1";
 			}
 			else if(response == "ERROR_2"){
 				$("#message").html("Playlist finished, please add more videos...!");
+				playlistState = "ERROR_2";
 			}
 			else{
 				$("#message").html("");
 				var bit = response.split(';');
 				currentlyPlaying = bit[1];
 				player.loadVideoById( currentlyPlaying, 0, "small");
-				clearInterval(getNext);
+				playlistState = "AYOK";
+				if(canWebsocket == false){
+					clearInterval(getNext);
+				}
 			}						
 	  	},
 	});
@@ -115,8 +130,12 @@ function onPlayerStateChange(newState) {
 				//Do nothing
 			}
 		});
-
-		getNext = setInterval(readForNext, 1000);
+		if(canWebsocket){
+			readForNext();
+		}
+		else{
+			getNext = setInterval(readForNext, 1000);
+		}
 	}
 	else if(player.getPlayerState() == 3){
 		if(seek > 0){
@@ -127,6 +146,7 @@ function onPlayerStateChange(newState) {
 }
 
 function doThings(){
+	console.log("This is the doThings function");
 	$.ajax({
 		url: "read_file.php?mode=entry",
 		cache: false,
@@ -134,9 +154,11 @@ function doThings(){
 		success: function(response){
 			if(response == "ERROR_1"){
 				$("#message").html("Nothing to play yet...!");
+				playlistState = "ERROR_1";
 			}
 			else if(response == "ERROR_2"){
 				$("#message").html("Playlist finished, please add more videos...!");
+				playlistState = "ERROR_2";
 			}
 			else{
 				$("#message").html("");
@@ -158,7 +180,10 @@ function doThings(){
 					    	'onStateChange': onPlayerStateChange
 							}
 				}); 
-				clearInterval(checkPlaylist);
+				playlistState = "AYOK";
+				if(canWebsocket == false){
+					clearInterval(checkPlaylist);
+				}
 			}						
 	  	},
 	});
@@ -183,13 +208,6 @@ function addThings(){
 		for(var n=0; n<alsoTemp.length; n++){
 			if(alsoTemp[n][0] == 'v'&& alsoTemp[n][1] == '='){
 				var vID = alsoTemp[n].substring(2, 13);
-				//NEED TO broadcast video title added
-				$.ajax({
-					url: "build.php?vid="+vID,
-					cache: false,
-					success: function(response){
-					  	}
-				});
 				var title = "";
 		        $.ajax({
 		                url: "http://gdata.youtube.com/feeds/api/videos/"+vID+"?v=2&alt=json",
@@ -202,8 +220,19 @@ function addThings(){
 													};
 													connection.send(JSON.stringify(msg));
 	                								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
-	                							}
-		        		});
+
+	                								$.ajax({
+														url: "build.php?vid="+vID,
+														cache: false,
+														success: function(response){
+														  	}
+													});
+
+	                							},
+	                	error: function(data){
+	                		console.log("youtube request failed with "+data);
+	                	}
+		        	});
 			}
 		}
     }
@@ -213,7 +242,6 @@ function searchThings(){
 	var searchStuff = $("#searchStuff");
 	if($("#searchStuff").css('display') == "none"){
 		$("#searchStuff").css('display', "");
-		$("#searchStuff").html("<p>some stuff comes here !</p>");
 	}
 	else{
 		$("#searchStuff").css('display', "none");

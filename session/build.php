@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+//Need to add verification of valid id, dunno if client side or server side both reqired
 	$no = file_get_contents($_SESSION["sid"]."/no", LOCK_EX);
 	if($no == 0){
 		file_put_contents($_SESSION["sid"]."/startTime", time()+2, LOCK_EX);

@@ -42,8 +42,18 @@ function checkForWebsockets(){
 			//Browser does not support websockets
 			return false;
 		}
-		//Browser does support websockets
-		return true;
+		else if (!("WebSocket" in window)){ 
+		   //Browser does not support websockets
+			return false;
+		}
+		else if( typeof(WebSocket) != "function" ) {
+		    //Browser does not support websockets
+			return false;
+		}
+		else{
+			//Browser does support websockets
+			return true;
+		}
 }
 
 function getUrlVars() {

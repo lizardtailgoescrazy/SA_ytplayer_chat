@@ -60,9 +60,9 @@ unset($_SESSION["sno"]);
 						</div>
 						<div id="message">Initalizing...</div>
 						<div id="builder">
-								<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." /><br><br>
+								<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." disabled="disabled" /><br><br>
 								<button id="playlistBuilder" class="btn" onclick='addThings();' disabled="disabled">Initalizing...</button>
-								<button id="searchButton" class="btn" onclick='searchThings();' >Search for a video</button>
+								<button id="searchButton" class="btn" onclick='searchThings();' disabled="disabled">Initalizing...</button>
 						</div>
 						<div id="videoDetails" class="margin_1em">&nbsp</div>
 					</td>
@@ -88,7 +88,11 @@ unset($_SESSION["sno"]);
 	<script type="text/javascript" src="../js/helper.js"></script>
 	<!-- Javascript stuff -->
 	<script type="text/javascript">
+		var playlistState = "ERROR_1";
+		var canWebsocket = "true";
+		var checkPlaylist;
 			if (checkForWebsockets() == false){
+				canWebsocket = false;
 				$("#board").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. You will be unable to use the chat but the YouTube player will still work !</b></p>");
 				$("#chatBox").hide();
 				$("#board").attr('disabled', 'disabled');
@@ -96,11 +100,10 @@ unset($_SESSION["sno"]);
 
 			// open connection
 			var connection = new WebSocket('ws://54.244.117.108:1337');
-
 			connection.onopen = function () {
 				//enable and clear chatbox
-				$("#chatBox").removeAttr('disabled');
 				$("#chatBox").val("");
+				$("#chatBox").removeAttr('disabled');
 				var msg = {
 				    type: "setup",
 				    id: <?php print("\"".$_GET["id"]."\""); ?>,
@@ -112,6 +115,10 @@ unset($_SESSION["sno"]);
 
 			connection.onerror = function (error) {
 				$("#board").html("<p class='errorSpace'><b>Sorry, unable to contact the chat server.</b></p>");
+				canWebsocket = false;
+				if(!checkPlaylist){
+					checkPlaylist = setInterval(doThings, 2000);
+				}
 			};
 		</script>
 
