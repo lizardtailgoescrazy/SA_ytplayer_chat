@@ -37,6 +37,8 @@ if(isset($_SESSION["directURL"])){
 					<div class="control-group">
 						<button class="btn" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new session</button>
 					</div>
+					<!-- We really shouldn't be doing this, all the data should be computed and just
+					print out here -->
 					<?php } ?>
 					<?php if(isset($_SESSION["errorURL"])){
 						print("<span class=\"errorSpace\">");
