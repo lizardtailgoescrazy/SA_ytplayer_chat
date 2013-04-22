@@ -13,7 +13,7 @@
 	
 		$searchTerm = $_GET["q"];
 		$searchTerm = str_replace(" ", "+", $searchTerm);
-		$tempUrl = "http://gdata.youtube.com/feeds/api/videos?q=".$searchTerm."&orderby=published&start-index=11&max-results=10&v=2";
+		$tempUrl = "http://gdata.youtube.com/feeds/api/videos?q=".$searchTerm."&orderby=relevance&start-index=11&max-results=10&v=2";
 		//$tempUrl = "http://gdata.youtube.com/feeds/api/videos/".$url."?v=2";
 		$content = file_get_contents($tempUrl);
 		$xml = simplexml_load_string($content);

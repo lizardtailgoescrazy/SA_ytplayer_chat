@@ -27,8 +27,7 @@ $(window).unload(function() {
 	});
 });
 
-$(document).ready(function(){
-	$("#board").height(($(window).height())*0.63);
+function makeControlsLive(){
 	/*Make controls live*/
 	$("#vol_up").click( function(){
 		if(player){
@@ -63,13 +62,7 @@ $(document).ready(function(){
 			}
 		}
 	});
-});
-
-// Load the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/player_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
 
 // Replace the 'ytplayer' element with an <iframe> and
 // YouTube player after the API code downloads.
@@ -179,7 +172,8 @@ function doThings(){
 					events: {
 					    	'onStateChange': onPlayerStateChange
 							}
-				}); 
+				});
+				makeControlsLive();
 				playlistState = "AYOK";
 				if(canWebsocket == false){
 					clearInterval(checkPlaylist);
@@ -218,7 +212,9 @@ function addThings(){
 													    type: "ytplayer",
 													    name: title
 													};
-													connection.send(JSON.stringify(msg));
+													if(canWebsocket){
+														connection.send(JSON.stringify(msg));
+													}
 	                								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
 
 	                								$.ajax({
@@ -249,3 +245,11 @@ function searchThings(){
 	}
 	return false;
 }
+
+/*The actual doing of things*/
+
+// Load the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/player_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);

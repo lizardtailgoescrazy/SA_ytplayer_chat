@@ -1,10 +1,10 @@
 <?php 
 session_start();
-$lengthOfID = 8;
+include "../define.php";
 
 if(!isset($_SESSION["nick"]) || !isset($_SESSION["sno"])){
 	$_SESSION["directURL"] =  $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-	header("Location: http://localhost/sugar"); 
+	header("Location: ".$homepage); 
 }
 else{
 $_SESSION["sid"] = $_SESSION["sno"];
@@ -91,38 +91,11 @@ unset($_SESSION["sno"]);
 		var playlistState = "ERROR_1";
 		var canWebsocket = "true";
 		var checkPlaylist;
-			if (checkForWebsockets() == false){
-				canWebsocket = false;
-				$("#board").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. You will be unable to use the chat but the YouTube player will still work !</b></p>");
-				$("#chatBox").hide();
-				$("#board").attr('disabled', 'disabled');
-			}
+		var sessionUsername = <?php print("\"".$_SESSION["nick"]."\""); ?>;
+		var connection;
+	</script>
 
-			// open connection
-			var connection = new WebSocket('ws://54.244.117.108:1337');
-			connection.onopen = function () {
-				//enable and clear chatbox
-				$("#chatBox").val("");
-				$("#chatBox").removeAttr('disabled');
-				var msg = {
-				    type: "setup",
-				    id: <?php print("\"".$_GET["id"]."\""); ?>,
-				    username:   <?php print("\"".$_SESSION["nick"]."\""); ?>,
-				    date: Date.now()
-				};
-				connection.send(JSON.stringify(msg));
-			};
-
-			connection.onerror = function (error) {
-				$("#board").html("<p class='errorSpace'><b>Sorry, unable to contact the chat server.</b></p>");
-				canWebsocket = false;
-				if(!checkPlaylist){
-					checkPlaylist = setInterval(doThings, 2000);
-				}
-			};
-		</script>
-
-		<script type="text/javascript" src="../js/websocketStuff.js"></script>
+	<script type="text/javascript" src="../js/websocketStuff.js"></script>
 	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
 	<script type="text/javascript" src="../js/overlay.js"></script>
 

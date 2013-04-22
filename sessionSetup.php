@@ -1,9 +1,10 @@
 <?php
 session_start();
-$nextDir = "session";
+include "define.php";
+
 if(rtrim($_POST["username"])==""){
     $_SESSION["errorUsr"]="Please enter a username !";
-    header("Location: http://localhost/sugar");
+    header("Location: ".$homepage);
 
 }
 else{
@@ -30,7 +31,7 @@ else{
     else{
     	if(rtrim($_POST["sessionURL"])==""){
             $_SESSION["errorURL"]="Please enter a session URL !";
-            header("Location: http://localhost/sugar"); 
+            header("Location: ".$homepage); 
         }
         else{
             $URL = $_POST["sessionURL"];
@@ -47,7 +48,7 @@ else{
 
                     if(!is_dir($nextDir."/".$_SESSION["sno"])){
                         $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
-                        header("Location: http://localhost/sugar"); 
+                        header("Location: ".$homepage); 
                     }
                     else{
                         $pplHere = file_get_contents($nextDir."/".$_SESSION["sno"]."/peopleHere", LOCK_EX);
@@ -74,7 +75,7 @@ else{
             }
             if($i >= sizeof($temp)){
                 $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
-                header("Location: http://localhost/sugar"); 
+                header("Location: ".$homepage); 
             }
             else{
 
@@ -82,7 +83,7 @@ else{
 
                 if(!is_dir($nextDir."/".$_SESSION["sno"])){
                     $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
-                    header("Location: http://localhost/sugar"); 
+                    header("Location: ".$homepage); 
                 }
                 else{
                     header( "Location: $nextDir/".$_SESSION["sno"]);

@@ -20,7 +20,9 @@ function addThingsFromSearch(vid){
 										    type: "ytplayer",
 										    name: title
 										};
-										connection.send(JSON.stringify(msg));
+										if(canWebsocket){
+											connection.send(JSON.stringify(msg));
+										}
         								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
         							}
     		});
