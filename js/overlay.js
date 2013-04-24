@@ -39,6 +39,8 @@ function searchThings(){
 			$("#searchStuff").css('display', "none");
 			$("#searchStuff").html("");
 		});
+
+		//On click handler for search button
 		$("#searchThis").ready(function(){
 			$("#searchThis").click(function(){
 				$.ajax({
@@ -61,6 +63,43 @@ function searchThings(){
 				});
 			});
 		});
+
+		//Auto complete handler for textbox
+		$("#searchTerm").ready(function(){
+			var searchTerm = $("#searchTerm");
+			searchTerm.autocomplete({ 
+				source: function(request, response) {
+					$.ajax({
+						url: 'http://query.yahooapis.com/v1/public/streaming/yql',
+						dataType: 'JSONP',
+						data: {
+							format: 'json',
+							q: 'select * from xml where url="http://google.com/complete/search?hl=nl&output=toolbar&q=' + encodeURIComponent(request.term) + '"'
+						},
+						success: function(data) {
+							if (typeof data == 'string') data = $.parseJSON(data);
+							response($.map(data.query.results.toplevel.CompleteSuggestion, function(item) {
+								return { label: item.suggestion.data, value: item.suggestion.data };
+							}));
+						}
+					});
+				},
+				open: function(){
+					doSearch($('.ui-autocomplete li:first-child a').text(), true, false);
+					$(".ui-autocomplete :first-child a").addClass("ui-state-hover");
+					searchTerm.focus();
+					return false;
+				},
+				select: function(e, ui){
+					searchTerm.autocomplete('search', ui.item.value);
+				},
+				close : function (event, ui) {
+					val = searchTerm.val();
+					searchTerm.autocomplete( "search", val );
+					searchTerm.blur();
+				}
+			});
+		});	
 	}
 	else{
 		//Do nothing

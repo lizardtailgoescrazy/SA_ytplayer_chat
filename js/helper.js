@@ -68,3 +68,14 @@ function validateURL(url) {
     var result = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
     return (url.match(result)) ? RegExp.$1 : false;
 }
+
+function logThis(msg){
+	//comment the return to turn on debugging -- TO REMOVE
+	return true;
+	if (console && console.log) {
+	    console.log(msg);
+    }
+	else{
+		//Do nothing for browsers for which console does not exist
+	}
+}

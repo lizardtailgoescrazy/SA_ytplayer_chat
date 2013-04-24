@@ -6,7 +6,59 @@ $(function () {
 	var input = $('#chatBox');
 	//var status = $('#status');
 
+	//Recieve message from server
+	function writeMessage(author, message, color, dt) {
+		if(canWebsocket){
+			var oldscrollHeight = content.attr("scrollHeight") - 20;
+			content.append('<p><span style="color:' + color + '"><b>' + author + '</b></span> @ ' +
+				+ (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
+				+ (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
+				+ ': ' + message + '</p>');
+			var newscrollHeight = content.attr("scrollHeight") - 20;
+			if(newscrollHeight > oldscrollHeight){
+				content.animate({ scrollTop: newscrollHeight }, 'normal');
+			}				
+		}
+	}
+
+	/*Create and get youtube API*/
+	if (!window['YT']) {
+		var YT = {};
+	}
+	if (!YT.Player) 
+	{	
+		(function(){
+			var a = document.createElement('script');
+			a.src = 'https:' + '//s.ytimg.com/yts/jsbin/www-widgetapi-vflEwv9hv.js';
+			a.async = false;
+			var b = document.getElementsByTagName('script')[0];
+			b.parentNode.insertBefore(a, b);
+		})();
+	}
+
+	//Set height of chat log box
 	content.height(($(window).height())*0.63);
+
+	//Check for submit of chatBox
+	input.keydown(function(e) {
+		if (e.keyCode === 13) {
+			var msg = $(this).val();
+			if(!msg){
+				return;
+			}
+		
+			var prepedMsg = {
+				type: "message",
+			    message: msg,
+			};
+
+			connection.send(JSON.stringify(prepedMsg));
+			$(this).val('');
+			// disable the input field to make the user wait until server
+			// sends back response
+			input.attr('disabled', 'disabled');
+		}
+	});
 
 	if (checkForWebsockets() == false){
 		canWebsocket = false;
@@ -45,7 +97,7 @@ $(function () {
 				var json = JSON.parse(message.data);
 			} 
 			catch (e) {
-				console.log('This doesn\'t look like a valid JSON: ', message.data);
+				logThis('This doesn\'t look like a valid JSON: ', message.data);
 				return;
 			}
 
@@ -78,44 +130,8 @@ $(function () {
 				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
 			}
 			else {
-				console.log('Incompatible JSON: ', json);
+				logThis('Incompatible JSON: ', json);
 			}
 		};
-	}
-		
-	//Check for submit of chatBox
-	input.keydown(function(e) {
-		if (e.keyCode === 13) {
-			var msg = $(this).val();
-			if(!msg){
-				return;
-			}
-		
-			var prepedMsg = {
-				type: "message",
-			    message: msg,
-			};
-
-			connection.send(JSON.stringify(prepedMsg));
-			$(this).val('');
-			// disable the input field to make the user wait until server
-			// sends back response
-			input.attr('disabled', 'disabled');
-		}
-	});
-
-	//Recieve message from server
-	function writeMessage(author, message, color, dt) {
-		if(canWebsocket){
-			var oldscrollHeight = content.attr("scrollHeight") - 20;
-			content.append('<p><span style="color:' + color + '"><b>' + author + '</b></span> @ ' +
-				+ (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
-				+ (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-				+ ': ' + message + '</p>');
-			var newscrollHeight = content.attr("scrollHeight") - 20;
-			if(newscrollHeight > oldscrollHeight){
-				content.animate({ scrollTop: newscrollHeight }, 'normal');
-			}				
-		}
 	}
 });

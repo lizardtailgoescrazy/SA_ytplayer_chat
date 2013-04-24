@@ -22,6 +22,9 @@ unset($_SESSION["sno"]);
 	<link type="text/css" rel="stylesheet" href="../style/main.css" />
 	<link href="../style/bootstrap.css" rel="stylesheet">
     <link href="../style/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style/autocomplete.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 </head>
 <body>
@@ -37,7 +40,7 @@ unset($_SESSION["sno"]);
 					<td>
 						<!-- This should not be done inline, should compute whatever needs to be computed in the
 						php block and just print it out here, keep logic away from the view -->
-						<h3 id="sessionURL">Session URL: <?php echo "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?></h3>
+						<h4 id="sessionURL">Session URL: <?php echo "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]; ?></h4>
 					</td>
 				</tr>
 			</table>
@@ -69,11 +72,8 @@ unset($_SESSION["sno"]);
 					<!-- Chat stuffs -->
 					<td>
 						<div id="messageBoard">
-							<!-- Why does the form have an empty div? -->
 							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
-								<div id="board">
-
-								</div>
+								<div id="board"><!-- Chat logs loaded here --></div>
 								<input type="text" id="chatBox" cols=2 placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" />
 							</form>
 						</div>
@@ -83,20 +83,18 @@ unset($_SESSION["sno"]);
 
 	<!-- Le javascript
 	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/helper.js"></script>
-	<!-- Javascript stuff -->
 	<script type="text/javascript">
 		var playlistState = "ERROR_1";
 		var canWebsocket = "true";
 		var checkPlaylist;
 		var sessionUsername = <?php print("\"".$_SESSION["nick"]."\""); ?>;
 		var connection;
+		var tag;
+		var firstScriptTag;
 	</script>
-
-	<script type="text/javascript" src="../js/websocketStuff.js"></script>
 	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
+	<script type="text/javascript" src="../js/websocketStuff.js"></script>
 	<script type="text/javascript" src="../js/overlay.js"></script>
 
 </body>

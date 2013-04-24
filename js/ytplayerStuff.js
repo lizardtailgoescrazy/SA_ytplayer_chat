@@ -67,12 +67,11 @@ function makeControlsLive(){
 // Replace the 'ytplayer' element with an <iframe> and
 // YouTube player after the API code downloads.
 function onYouTubePlayerAPIReady() {
+	logThis("Yes, youtube API ready.");
 	if(canWebsocket){
-		console.log("Running dothings only once because websockets are enabled");
 		doThings();
 	}
 	else{
-		console.log("Running dothings on repeat because websockets are disabled");
 		checkPlaylist = setInterval(doThings, 2000);
 	}
 	$("#playlistBuilder").html("Add URL to Playlist");
@@ -84,7 +83,7 @@ function onYouTubePlayerAPIReady() {
 }
 
 function readForNext(){
-	console.log("This is the readForNext function");
+	logThis("This is the readForNext function");
 	seek = -1;
 	$.ajax({
 		url: "read_file.php?mode=next",
@@ -139,7 +138,7 @@ function onPlayerStateChange(newState) {
 }
 
 function doThings(){
-	console.log("This is the doThings function");
+	logThis("This is the doThings function");
 	$.ajax({
 		url: "read_file.php?mode=entry",
 		cache: false,
@@ -226,7 +225,7 @@ function addThings(){
 
 	                							},
 	                	error: function(data){
-	                		console.log("youtube request failed with "+data);
+	                		logThis("youtube request failed with "+data);
 	                	}
 		        	});
 			}
@@ -245,11 +244,3 @@ function searchThings(){
 	}
 	return false;
 }
-
-/*The actual doing of things*/
-
-// Load the IFrame Player API code asynchronously.
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/player_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
