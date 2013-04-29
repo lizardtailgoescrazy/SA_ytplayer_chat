@@ -45,11 +45,46 @@ unset($_SESSION["sno"]);
 				</tr>
 			</table>
 			<div id="searchStuff" style="display: none;"></div>
+	<!-- Rewriting HTML for layout using divs -->
+	<div class="row">
+	  <div class="span2">Playlist+Else</div>
+	  <div class="span6" id="video">
+		<div id="bubble">
+			<div id="ytplayer">...</div>
+			<div id="controls" class="margin_1em">
+				<span unselectable="on" id="vol_down" class="vol_controls">&nbsp&nbsp-&nbsp&nbsp</span>
+				<span unselectable="on" id="vol_value">100%</span>
+				<span unselectable="on" id="vol_up" class="vol_controls">&nbsp&nbsp+&nbsp&nbsp</span>
+				<span unselectable="on">&nbsp&nbsp&nbsp&nbsp</span>
+				<span unselectable="on" id="vol_mute" class="vol_controls">&nbspmute&nbsp</span>
+		</div>
+	</div>
+	<div id="message">Initalizing...</div>
+	<div id="builder">
+			<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." disabled="disabled" /><br><br>
+			<button id="playlistBuilder" class="btn" onclick='addThings();' disabled="disabled">Initalizing...</button>
+			<button id="searchButton" class="btn" onclick='searchThings();' disabled="disabled">Initalizing...</button>
+	</div>
+	<div id="videoDetails" class="margin_1em">&nbsp</div>
+	  </div>
+	  <div class="span4" id="chat-box">
+			<div class="row">
+				<div class="span4" id="messageBoard">
+					<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
+					<div class="span4" id="board"><!-- Chat logs loaded here --></div>
+					</div>
+					</form>
+					<div class="span4">
+						<input type="text" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" />
+					</div>
+	  			</div>
+	</div>
+
 			<!-- Heading content table str -->
 			<table>
 				<tr>
 					<!-- Youtube stuffs -->
-					<td style="text-align: center;">
+					<!--<td style="text-align: center;">
 						<div id="bubble">
 							<div id="ytplayer">...</div>
 							<div id="controls" class="margin_1em">
@@ -68,16 +103,16 @@ unset($_SESSION["sno"]);
 								<button id="searchButton" class="btn" onclick='searchThings();' disabled="disabled">Initalizing...</button>
 						</div>
 						<div id="videoDetails" class="margin_1em">&nbsp</div>
-					</td>
+					</td>-->
 					<!-- Chat stuffs -->
-					<td>
+					<!--<td>
 						<div id="messageBoard">
 							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
-								<div id="board"><!-- Chat logs loaded here --></div>
+								<div id="board"><!-- Chat logs loaded here --><!--</div>
 								<input type="text" id="chatBox" cols=2 placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" />
 							</form>
 						</div>
-				</td>
+				</td>-->
 		</div> 
 	</div>
 

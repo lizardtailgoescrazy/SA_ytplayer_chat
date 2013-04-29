@@ -36,7 +36,7 @@ hr{
 	padding: 0.5em;
 }
 
-#messageBoard #board{
+/*#messageBoard #board{
 	width: 96%;
 	height:512px;
 	background: white;
@@ -45,13 +45,15 @@ hr{
 	text-align: left;
 	padding-left:10px;
 	padding-right: 10px;
-}
+}*/
 #chatBox{
-	width: 96%;
+/*	width: 96%;
 	height: 3em;
 	padding-left:10px;
 	padding-right: 10px;
 	border: 1px solid gray;
+*/
+	width:96%;
 }
 
 #ytplayer{
@@ -189,4 +191,17 @@ table {
 #searchResultDiv ul li:hover{
 	background: #c4302b;
 	color: white;
+}
+
+#chat-box {
+	text-align: left;
+}
+
+#board-tmp {
+	height:512px;
+}
+
+#board {
+	margin-left: 2px;
+	background: white;
 }
