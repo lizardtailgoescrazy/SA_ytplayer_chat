@@ -44,7 +44,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 			<!-- Overlay div -->
 			<div id="searchStuff" style="display: none;"></div>
 			<!-- Rewriting HTML for layout using divs -->
-			<div class="row">
+			<div class="row-fluid">
 			  	<div class="span2">Playlist+Else</div>
 			  	<div class="span6" id="video">
 					<div id="bubble">
@@ -66,16 +66,16 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 					<div id="videoDetails" class="margin_1em">&nbsp</div>
 			  	</div>
 			  	<div class="span4" id="chat-box">
-					<div class="row">
-						<div class="span4" id="messageBoard">
+			  		<div class="row-fluid">
+						<div id="messageBoard">
 							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
-								<div class="span4" id="board"><!-- Chat logs loaded here --></div>
+								<div id="board"><!-- Chat logs loaded here --></div>
 							</form>
 						</div>
-							<div class="span4">
+							<div>
 								<input type="text" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" />
 							</div>
-			  		</div>
+					</div>
 				</div>
 			</div> 
 		</div>
