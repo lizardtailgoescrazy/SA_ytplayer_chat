@@ -6,7 +6,7 @@ session_start();
 	if($no == 0){
 		file_put_contents($_SESSION["sid"]."/startTime", time()+2, LOCK_EX);
 	}
-	$content = $no.";".$_GET['vid']."\n";
+	$content = $no.";".$_GET['vid'].";".$_SESSION["nick"]."\n";
 	if(!file_put_contents($_SESSION["sid"]."/lawl", $content, FILE_APPEND | LOCK_EX)){
 		echo "Unable to output file !";
 	}

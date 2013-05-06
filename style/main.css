@@ -11,7 +11,7 @@ h2{
 }
 
 hr{
-	margin: 2em auto;
+	width: 90%;
 }
 
 
@@ -32,27 +32,10 @@ hr{
 
 #sessionStuff input[type="text"]{
 	width: 80%;
-	/*font-size: 1.25em;*/
 	padding: 0.5em;
 }
 
-/*#messageBoard #board{
-	width: 96%;
-	height:512px;
-	background: white;
-	border: 1px solid gray;
-	overflow:auto;
-	text-align: left;
-	padding-left:10px;
-	padding-right: 10px;
-}*/
 #chatBox{
-/*	width: 96%;
-	height: 3em;
-	padding-left:10px;
-	padding-right: 10px;
-	border: 1px solid gray;
-*/
 	width:98%;
 }
 
@@ -69,7 +52,7 @@ hr{
 
 #message{
 	text-align: center;
-	padding: 1em;
+	padding: .25em;
 }
 
 table tr td{
@@ -204,4 +187,25 @@ table {
 #board {
 	margin-left: 2px;
 	background: white;
+}
+
+#activePpl{
+	max-height: 512px;
+}
+
+.soft_box{
+	background-color: #FFFFFF;
+	border: solid 1px #EEEEEE;
+	border-radius: 6px 6px 6px 6px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+	margin: 15px 0;
+}
+
+.no_bullets{
+	list-style-type: none;
+}
+
+.padding_top_bottom_1{
+	padding-top: 1em;
+	padding-bottom: 1em;
 }

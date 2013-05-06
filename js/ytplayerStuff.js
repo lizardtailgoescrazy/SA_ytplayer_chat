@@ -3,6 +3,7 @@ var player;
 var currentlyPlaying;
 var getNext;
 var seek = -1;
+var currentDJ = null;
 
 window.onbeforeunload = function (e) {
   	var message = "Do you really want to exit the chat session ? You will be logged out automatically.",
@@ -26,6 +27,31 @@ $(window).unload(function() {
 	  	}
 	});
 });
+
+function amITheDJ(){
+	logThis("Checking if I'm the DJ");
+	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
+		logThis("Yes, its me !");
+		$("#ifImTheDJ").html('<button class="btn" onclick=\'skipThis();\'>Skip this video</button>');
+	}
+	else{
+		$("#ifImTheDJ").empty();
+	}
+}
+
+function skipThis(){
+	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
+		logThis("Init-ing the process to skip this video");
+		var msg = {
+		    type: "control",
+		    operation: "skipToNext",
+		    step: "init"
+		};
+		if(canWebsocket){
+			connection.send(JSON.stringify(msg));
+		}
+	}
+}
 
 function makeControlsLive(){
 	/*Make controls live*/
@@ -92,21 +118,39 @@ function readForNext(){
 			if(response == "ERROR_1"){
 				$("#message").html("Nothing to play yet...!");
 				playlistState = "ERROR_1";
+				currentDJ = null;
+				$("#currentDJ").html("&nbsp---&nbsp");
 			}
 			else if(response == "ERROR_2"){
 				$("#message").html("Playlist finished, please add more videos...!");
 				playlistState = "ERROR_2";
+				currentDJ = null;
+				$("#currentDJ").html("&nbsp---&nbsp");
 			}
 			else{
-				$("#message").html("");
+				//$("#message").html("");
 				var bit = response.split(';');
 				currentlyPlaying = bit[1];
+				currentDJ = bit[2];
+				logThis("Fetching video title...!");
+				$.ajax({
+				    url: "http://gdata.youtube.com/feeds/api/videos/"+currentlyPlaying+"?v=2&alt=json",
+				    dataType: "jsonp",
+				    success: function (data){
+				    	$("#message").html("&#9658; " + data.entry.title.$t);
+				    	$("#currentDJ").html(currentDJ);
+					},
+					error: function(data){
+						logThis("youtube request failed with "+data);
+					}
+				});
 				player.loadVideoById( currentlyPlaying, 0, "small");
 				playlistState = "AYOK";
 				if(canWebsocket == false){
 					clearInterval(getNext);
 				}
-			}						
+			}
+			amITheDJ();						
 	  	},
 	});
 }
@@ -145,7 +189,7 @@ function doThings(){
 		async: false,
 		success: function(response){
 			if(response == "ERROR_1"){
-				$("#message").html("Nothing to play yet...!");
+				$("#message").html("Nothing to play, add a video to the playlist...!");
 				playlistState = "ERROR_1";
 			}
 			else if(response == "ERROR_2"){
@@ -153,10 +197,22 @@ function doThings(){
 				playlistState = "ERROR_2";
 			}
 			else{
-				$("#message").html("");
 				var bit = response.split(';');
 				seek = parseInt(bit[0]);
-				currentlyPlaying = bit[1];		
+				currentlyPlaying = bit[1];
+				currentDJ = bit[2];		
+				logThis("Fetching video title...!");
+				$.ajax({
+				    url: "http://gdata.youtube.com/feeds/api/videos/"+currentlyPlaying+"?v=2&alt=json",
+				    dataType: "jsonp",
+				    success: function (data){
+				    	$("#message").html("&#9658; " + data.entry.title.$t);
+				    	$("#currentDJ").html(currentDJ);
+						},
+					error: function(data){
+						logThis("youtube request failed with "+data);
+					}
+				});
 				player = new YT.Player('ytplayer', {
 					   height: '200',
 					   width: '325',
@@ -177,6 +233,8 @@ function doThings(){
 				if(canWebsocket == false){
 					clearInterval(checkPlaylist);
 				}
+				amITheDJ();
+				$("#ytplayer").block({ message: null });
 			}						
 	  	},
 	});
@@ -228,6 +286,9 @@ function addThings(){
 	                		logThis("youtube request failed with "+data);
 	                	}
 		        	});
+		        setTimeout(function() {
+				  $("#videoDetails").fadeOut().empty();
+				}, 5000);
 			}
 		}
     }

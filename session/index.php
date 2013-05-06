@@ -43,10 +43,27 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 			</table>
 			<!-- Overlay div -->
 			<div id="searchStuff" style="display: none;"></div>
-			<!-- Rewriting HTML for layout using divs -->
 			<div class="row-fluid">
-			  	<div class="span2">Playlist+Else</div>
-			  	<div class="span6" id="video">
+				<!-- Details div -->
+			  	<div class="span2">
+			  		<div id="activePpl" class="soft_box padding_top_bottom_1">
+			  			Active Participants
+			  			<hr>
+			  			<ul id="activeUsers" class="no_bullets">
+			  			</ul>
+			  		</div>
+			  		<div class="soft_box padding_top_bottom_1">
+			  			Current DJ
+			  			<hr>
+			  			<p  id="currentDJ">&nbsp---&nbsp</p>
+			  			<div id="ifImTheDJ">
+
+			  			</div>
+			  		</div>
+			  	</div>
+				<!-- Video div -->
+			  	<div class="span5" id="video">
+			  		<div id="message" class="soft_box">Initalizing...</div>
 					<div id="bubble">
 						<div id="ytplayer">...</div>
 						<div id="controls" class="margin_1em">
@@ -57,7 +74,6 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 							<span unselectable="on" id="vol_mute" class="vol_controls">&nbspmute&nbsp</span>
 						</div>
 					</div>
-					<div id="message">Initalizing...</div>
 					<div id="builder">
 							<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." disabled="disabled" /><br><br>
 							<button id="playlistBuilder" class="btn" onclick='addThings();' disabled="disabled">Initalizing...</button>
@@ -65,7 +81,8 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 					</div>
 					<div id="videoDetails" class="margin_1em">&nbsp</div>
 			  	</div>
-			  	<div class="span4" id="chat-box">
+			  	<!-- Chat div -->
+			  	<div class="span5" id="chat-box">
 			  		<div class="row-fluid">
 						<div id="messageBoard">
 							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
@@ -83,6 +100,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 
 	<!-- Le javascript
 	================================================== -->
+	<script type="text/javascript" src="http://malsup.github.io/jquery.blockUI.js"></script>
 	<script type="text/javascript" src="../js/helper.js"></script>
 	<script type="text/javascript">
 		var playlistState = "ERROR_1";

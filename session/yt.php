@@ -1,19 +1,19 @@
 <?php
 	function toArray(SimpleXMLElement $xml) {
-    $array = (array)$xml;
-	foreach ( array_slice($array, 0) as $key => $value ) {
-        if ( $value instanceof SimpleXMLElement ) {
-            $array[$key] = empty($value) ? NULL : toArray($value);
-        }
-    }
-    return $array;
-}
+	    $array = (array)$xml;
+		foreach ( array_slice($array, 0) as $key => $value ) {
+	        if ( $value instanceof SimpleXMLElement ) {
+	            $array[$key] = empty($value) ? NULL : toArray($value);
+	        }
+	    }
+	    return $array;
+	}
 	
 	function constructChain(){
 	
 		$searchTerm = $_GET["q"];
 		$searchTerm = str_replace(" ", "+", $searchTerm);
-		$tempUrl = "http://gdata.youtube.com/feeds/api/videos?q=".$searchTerm."&orderby=relevance&start-index=11&max-results=10&v=2";
+		$tempUrl = "http://gdata.youtube.com/feeds/api/videos?q=".$searchTerm."&orderby=relevance&start-index=11&max-results=12&v=2";
 		//$tempUrl = "http://gdata.youtube.com/feeds/api/videos/".$url."?v=2";
 		$content = file_get_contents($tempUrl);
 		$xml = simplexml_load_string($content);
@@ -26,9 +26,10 @@
 				$xmlNodes = (array)($xmlElement);
 				$srcBits = explode('/', $xmlNodes['content']['src']);
 				$srcBits = explode('?version', $srcBits[4]);
-				$nextVideoId = $srcBits[0];
-				
-				print('<li class="result" destination="'.$nextVideoId.'">'.$xmlNodes['title']."</li>");
+				$videoId = $srcBits[0];
+				if(strlen($videoId) == 11){
+					print('<li class="result" destination="'.$videoId.'">'.$xmlNodes['title']."</li>");
+				}
 				//print("<br><br><br>".$xmlNodes['content']['src']."<br><br><br>");
 				
 			}
@@ -38,7 +39,5 @@
 			//do nothing
 		}
 	}
-	
 	constructChain();
-
 ?>

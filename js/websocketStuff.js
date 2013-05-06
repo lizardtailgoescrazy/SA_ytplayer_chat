@@ -68,6 +68,7 @@ $(function () {
 	}
 	else{
 		connection = new WebSocket('ws://54.244.117.108:1337');
+		//connection = new WebSocket('ws://arbiter:1337');
 
 		connection.onopen = function () {
 			//enable and clear chatbox
@@ -115,8 +116,18 @@ $(function () {
 				// it's a single message
 				input.removeAttr('disabled'); // let the user write another message
 				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
-			} 
-			else if (json.type === 'ytplayer') { 
+			}
+			else if (json.type === 'system') { 
+				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+				var temp = json.data.activeUsers;
+				var activeUsers = temp.split(";");
+				$("#activeUsers").empty();
+				for (var i=0; i < activeUsers.length-1; i++) {
+					logThis(activeUsers[i]);
+					$("#activeUsers").append('<li><p>'+activeUsers[i]+'</p></li>');
+				}
+			}
+			else if (json.type === 'ytplayer') {
 				if(playlistState === "ERROR_1" || playlistState === "ERROR_2"){
 					if(player){
 						//Player already intiated
@@ -128,6 +139,29 @@ $(function () {
 					}
 				}
 				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+			}
+			else if (json.type === 'control') { 
+				if(json.operation === 'skipToNext' && json.step === 'fin'){
+					if(trimStuff(json.data.author) === trimStuff(currentDJ)){
+						logThis("Skipping to next video");
+						player.stopVideo();
+						writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+						$.ajax({
+							url: "next.php?cPlay="+currentlyPlaying,
+							async: false,
+							cache: false,
+							success: function(response){
+								//Do nothing
+							}
+						});
+						if(canWebsocket){
+							readForNext();
+						}
+						else{
+							getNext = setInterval(readForNext, 1000);
+						}
+					}
+				}
 			}
 			else {
 				logThis('Incompatible JSON: ', json);

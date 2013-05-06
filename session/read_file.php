@@ -23,12 +23,12 @@
 					if($_GET['mode'] == "next"){
 						$t = time();
 						file_put_contents($_SESSION["sid"]."/startTime", $t, LOCK_EX);
-						print("0;".$twig[1]);
+						print("0;".$twig[1].";".$twig[2]);
 					}
 					else if($_GET['mode'] == "entry"){
 						$playedTime = file_get_contents($_SESSION["sid"]."/startTime", LOCK_EX);
 						$seekTime = time() - $playedTime;
-						print("$seekTime;".$twig[1]);
+						print("$seekTime;".$twig[1].";".$twig[2]);
 					}
 					break;
 				}
