@@ -67,7 +67,7 @@ $(function () {
 		$("#board").attr('disabled', 'disabled');
 	}
 	else{
-		connection = new WebSocket('ws://54.244.117.108:1337');
+		connection = new WebSocket('ws://54.214.33.188:1337');
 		//connection = new WebSocket('ws://arbiter:1337');
 
 		connection.onopen = function () {
