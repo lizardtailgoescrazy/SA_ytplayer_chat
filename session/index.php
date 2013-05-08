@@ -46,20 +46,21 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 			<div class="row-fluid">
 				<!-- Details div -->
 			  	<div class="span2">
-			  		<div id="activePpl" class="soft_box padding_top_bottom_1">
-			  			Active Participants
-			  			<hr>
-			  			<ul id="activeUsers" class="no_bullets">
-			  			</ul>
-			  		</div>
-			  		<div class="soft_box padding_top_bottom_1">
-			  			Current DJ
-			  			<hr>
-			  			<p  id="currentDJ">&nbsp---&nbsp</p>
-			  			<div id="ifImTheDJ">
+			  		<div class="row-fluid">
+				  		<div id="activePpl" class="soft_box">
+				  			<h6>Active Participants</h6>
+				  			<ul id="activeUsers" class="no_bullets">
+				  			</ul>
+				  		</div>
+				  		<div class="soft_box padding_top_bottom_1">
+				  			<h6>Current DJ</h6>
+				  			<p id="currentDJ">&nbsp---&nbsp</p>
+				  			<div id="ifImTheDJ">
 
+				  			</div>
 			  			</div>
-			  		</div>
+				  	</div>
+			  		
 			  	</div>
 				<!-- Video div -->
 			  	<div class="span5" id="video">
