@@ -1,4 +1,3 @@
-var tempee = 1;
 var player;
 var currentlyPlaying;
 var getNext;
@@ -120,12 +119,14 @@ function readForNext(){
 				playlistState = "ERROR_1";
 				currentDJ = null;
 				$("#currentDJ").html("&nbsp---&nbsp");
+				currentDJ = null;
 			}
 			else if(response == "ERROR_2"){
 				$("#message").html("Playlist finished, please add more videos...!");
 				playlistState = "ERROR_2";
 				currentDJ = null;
 				$("#currentDJ").html("&nbsp---&nbsp");
+				currentDJ = null;
 			}
 			else{
 				//$("#message").html("");

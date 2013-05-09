@@ -187,6 +187,7 @@ table {
 #board {
 	margin-left: 2px;
 	background: white;
+	overflow: auto;
 }
 
 .soft_box{

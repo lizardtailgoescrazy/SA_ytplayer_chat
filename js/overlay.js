@@ -31,7 +31,7 @@ function addThingsFromSearch(vid){
 function searchThings(){
 	var searchStuff = $("#searchStuff");
 	var overlayDisplay = "<div id=\"container\"><div class=\"jumbotron\">"+
-	"<input type=\"text\" placeholder=\"Search for youtube video...\" id=\"searchTerm\" /><button class=\"btn\"id=\"searchThis\" >Search for video</button><hr><div id=\"searchResultDiv\"></div><br><p id=\"overlayClose\"> [x] Close search</p></div></div>";
+	"<input type=\"text\" placeholder=\"Search for youtube video...\" id=\"searchTerm\" />    <button class=\"btn\"id=\"searchThis\" >Search</button><hr><div id=\"searchResultDiv\"></div><br><p id=\"overlayClose\"> [x] Close search</p></div></div>";
 	if($("#searchStuff").css('display') == "none"){
 		$("#searchStuff").css('display', "");
 		$("#searchStuff").html(overlayDisplay);
@@ -56,7 +56,7 @@ function searchThings(){
 							$(".result").click(function(){
 								$("#searchStuff").css('display', "none");
 								$("#searchStuff").html("");
-								addThingsFromSearch($(this).attr('destination'));
+								addThingsFromSearch($(this).prop('destination'));
 							});
 						}						
 					},

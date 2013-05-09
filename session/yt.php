@@ -28,7 +28,7 @@
 				$srcBits = explode('?version', $srcBits[4]);
 				$videoId = $srcBits[0];
 				if(strlen($videoId) == 11){
-					print('<li class="result" destination="'.$videoId.'">'.$xmlNodes['title']."</li>");
+					print('<li class="result" destination="'.$videoId.'"><img src="http://img.youtube.com/vi/'.$videoId.'/default.jpg" /><span>'.$xmlNodes['title']."</span></li>");
 				}
 				//print("<br><br><br>".$xmlNodes['content']['src']."<br><br><br>");
 				

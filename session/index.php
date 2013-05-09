@@ -55,9 +55,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 				  		<div class="soft_box padding_top_bottom_1">
 				  			<h6>Current DJ</h6>
 				  			<p id="currentDJ">&nbsp---&nbsp</p>
-				  			<div id="ifImTheDJ">
-
-				  			</div>
+				  			<div id="ifImTheDJ"></div>
 			  			</div>
 				  	</div>
 			  		
