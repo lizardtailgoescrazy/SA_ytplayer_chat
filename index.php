@@ -7,6 +7,23 @@ if(isset($_SESSION["directURL"])){
 	$URL = $_SESSION["directURL"];
 	unset($_SESSION["directURL"]);
 }
+
+$usernameMsg = "";
+$urlMsg = "";
+
+if(isset($_SESSION["errorUsr"])){
+		$usernameMsg = $usernameMsg."<div class=\"errorSpace\">";
+		$usernameMsg = $usernameMsg."**".$_SESSION["errorUsr"];
+		$usernameMsg = $usernameMsg."</div>";
+		unset($_SESSION["errorUsr"]);
+	}
+
+if(isset($_SESSION["errorURL"])){
+		$urlMsg = $urlMsg."<div class=\"errorSpace\">";
+		$urlMsg = $urlMsg."**".$_SESSION["errorURL"];
+		$urlMsg = $urlMsg."</div>";
+		unset($_SESSION["errorURL"]);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -23,29 +40,21 @@ if(isset($_SESSION["directURL"])){
 		<div class="container-narrow">
 			<div class="jumbotron jumbotron_margin">
 				<img class="margin_1em" src="res/logo_64.png" />
-				<?php if(isset($_SESSION["errorUsr"])){
-					print("<div class=\"errorSpace\">");
-					print("**".$_SESSION["errorUsr"]);
-					print("</div>");
-					unset($_SESSION["errorUsr"]);
-				} ?>
+				<?php print $usernameMsg; ?>
 				<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
 					<div class="control-group">
 						<input type="text" name="username" id="username" placeholder="pick a username"></input>
 					</div>
-					<?php if($directURLFlag == false){ ?>
+					<?php if($directURLFlag == false){ 
+					//Dont show below if the user did not come here directly
+						?>
 					<div class="control-group">
 						<button class="btn" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new session</button>
 					</div>
-					<!-- We really shouldn't be doing this, all the data should be computed and just
-					print out here -->
-					<?php } ?>
-					<?php if(isset($_SESSION["errorURL"])){
-						print("<span class=\"errorSpace\">");
-						print("**".$_SESSION["errorURL"]);
-						print("</span>");
-						unset($_SESSION["errorURL"]);
+					<?php 
+					//End of Dont show below if the user did not come here directly
 					} ?>
+					<?php print $urlMsg;?>
 					<div class="control-group">
 						<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
 					</div>

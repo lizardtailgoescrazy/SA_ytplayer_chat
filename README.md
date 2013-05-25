@@ -4,15 +4,11 @@ Description:	This is a web based client side synced youtube playlist, which can 
 				video, there is seperate chat engine running enabling session based chat.
 				
 Change Log:
-	1. Added current DJ
-	2. Added current participants
-	3. Added now playing box
-	4. Added skip this video 
+	1. Reformatted search
+	2. Added blocking div to youtube player to stpo pause and replay
 				
 Pending Changes:
 	1. To add support for both "free for all" and "round robin" playlist building
-	2. To add support for "skip this video" -- Done
-	3. Add error handling for failed ajax requests
-	4. Displaying playlist and currently playing video  -- Done
-	5. Displying active participants in session -- Done
-	6. Neat URLs
+	2. Add error handling for failed ajax requests
+	3. Add support for export todays playlist
+	4. Neat URLs  -- Low priority as sessions have no searchable data

@@ -23,44 +23,96 @@ function addThingsFromSearch(vid){
 										if(canWebsocket){
 											connection.send(JSON.stringify(msg));
 										}
-        								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
         							}
     		});
 }
 
 function searchThings(){
 	var searchStuff = $("#searchStuff");
-	var overlayDisplay = "<div id=\"container\"><div class=\"jumbotron\">"+
-	"<input type=\"text\" placeholder=\"Search for youtube video...\" id=\"searchTerm\" />    <button class=\"btn\"id=\"searchThis\" >Search</button><hr><div id=\"searchResultDiv\"></div><br><p id=\"overlayClose\"> [x] Close search</p></div></div>";
+	//var overlayDisplay = '';
 	if($("#searchStuff").css('display') == "none"){
 		$("#searchStuff").css('display', "");
-		$("#searchStuff").html(overlayDisplay);
+		//$("#searchStuff").html(overlayDisplay);
 		$("#overlayClose").click(function(){
 			$("#searchStuff").css('display', "none");
-			$("#searchStuff").html("");
 		});
-
 		//On click handler for search button
 		$("#searchThis").ready(function(){
+			$("#searchResultDiv").html("");
+			$("#searchTerm").val("");
+			$("#searchResultDiv").focus();
+			
 			$("#searchThis").click(function(){
-				$.ajax({
-					url: "yt.php?q="+$("#searchTerm").val(),
-					cache: false,
-					async: false,
-					success: function(response){
-						if(response == ""){
-							$("#searchResultDiv").html("No results found...!");
+				var toAdd = $("#searchTerm").val();
+				toAdd = trimStuff(toAdd);
+				if(toAdd == ""){
+					return false;
+				}
+				else{
+					if (validateURL(toAdd) == false) {
+						//Not youtube URL but keyword
+						$.ajax({
+							url: "yt.php?q="+$("#searchTerm").val(),
+							cache: false,
+							async: false,
+							success: function(response){
+								if(response == ""){
+									$("#searchResultDiv").html("No results found...!");
+								}
+								else{
+									$("#searchResultDiv").html(response);
+									$(".result").click(function(){
+										$("#searchStuff").css('display', "none");
+										//$("#searchStuff").html("");
+										addThingsFromSearch($(this).attr('destination'));
+									});
+								}						
+							},
+						});
+					} 
+					else{
+						//Valid youtube URL
+						$("#searchStuff").css('display', "none");
+						$("#searchTerm").val("");
+						var temp = toAdd.split("?");
+						var alsoTemp = temp[1].split("&");
+						for(var n=0; n<alsoTemp.length; n++){
+							if(alsoTemp[n][0] == 'v'&& alsoTemp[n][1] == '='){
+								var vID = alsoTemp[n].substring(2, 13);
+								var title = "";
+								$.ajax({
+										url: "http://gdata.youtube.com/feeds/api/videos/"+vID+"?v=2&alt=json",
+										dataType: "jsonp",
+										success: function (data){ 
+																	title = data.entry.title.$t;
+																	var msg = {
+																		type: "ytplayer",
+																		name: title
+																	};
+																	if(canWebsocket){
+																		connection.send(JSON.stringify(msg));
+																	}
+																	$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
+
+																	$.ajax({
+																		url: "build.php?vid="+vID,
+																		cache: false,
+																		success: function(response){
+																			}
+																	});
+
+																},
+										error: function(data){
+											logThis("youtube request failed with "+data);
+										}
+									});
+								setTimeout(function() {
+								  $("#videoDetails").fadeOut().empty();
+								}, 5000);
+							}
 						}
-						else{
-							$("#searchResultDiv").html(response);
-							$(".result").click(function(){
-								$("#searchStuff").css('display', "none");
-								$("#searchStuff").html("");
-								addThingsFromSearch($(this).prop('destination'));
-							});
-						}						
-					},
-				});
+					}
+				}
 			});
 		});
 

@@ -1,7 +1,6 @@
 <?php 
 session_start();
 include "../define.php";
-
 if(!isset($_SESSION["nick"]) || !isset($_SESSION["sno"])){
 	$_SESSION["directURL"] =  $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 	header("Location: ".$homepage); 
@@ -25,82 +24,6 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     <link href="../style/bootstrap-responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/autocomplete.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-
-</head>
-<body>
-	<div id="content">
-		<div class="jumbotron">
-			<table class="table_25_75">
-				<tr>
-					<td>
-						<img src="../res/logo_32.png" />
-					</td>
-					<td>
-						<h4 id="sessionURL">Session URL: <?php echo $sessionURL; ?></h4>
-					</td>
-				</tr>
-			</table>
-			<!-- Overlay div -->
-			<div id="searchStuff" style="display: none;"></div>
-			<div class="row-fluid">
-				<!-- Details div -->
-			  	<div class="span2">
-			  		<div class="row-fluid">
-				  		<div id="activePpl" class="soft_box">
-				  			<h6>Active Participants</h6>
-				  			<ul id="activeUsers" class="no_bullets">
-				  			</ul>
-				  		</div>
-				  		<div class="soft_box padding_top_bottom_1">
-				  			<h6>Current DJ</h6>
-				  			<p id="currentDJ">&nbsp---&nbsp</p>
-				  			<div id="ifImTheDJ"></div>
-			  			</div>
-				  	</div>
-			  		
-			  	</div>
-				<!-- Video div -->
-			  	<div class="span5" id="video">
-			  		<div id="message" class="soft_box">Initalizing...</div>
-					<div id="bubble">
-						<div id="ytplayer">...</div>
-						<div id="controls" class="margin_1em">
-							<span unselectable="on" id="vol_down" class="vol_controls">&nbsp&nbsp-&nbsp&nbsp</span>
-							<span unselectable="on" id="vol_value">100%</span>
-							<span unselectable="on" id="vol_up" class="vol_controls">&nbsp&nbsp+&nbsp&nbsp</span>
-							<span unselectable="on">&nbsp&nbsp&nbsp&nbsp</span>
-							<span unselectable="on" id="vol_mute" class="vol_controls">&nbspmute&nbsp</span>
-						</div>
-					</div>
-					<div id="builder">
-							<input type="text" name="URLAdd" id="URLAdd" placeholder="Enter YouTube URL here..." disabled="disabled" /><br><br>
-							<button id="playlistBuilder" class="btn" onclick='addThings();' disabled="disabled">Initalizing...</button>
-							<button id="searchButton" class="btn" onclick='searchThings();' disabled="disabled">Initalizing...</button>
-					</div>
-					<div id="videoDetails" class="margin_1em">&nbsp</div>
-			  	</div>
-			  	<!-- Chat div -->
-			  	<div class="span5" id="chat-box">
-			  		<div class="row-fluid">
-						<div id="messageBoard">
-							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
-								<div id="board"><!-- Chat logs loaded here --></div>
-							</form>
-						</div>
-							<div>
-								<input type="text" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" />
-							</div>
-					</div>
-				</div>
-			</div> 
-		</div>
-	</div>
-
-	<!-- Le javascript
-	================================================== -->
-	<script type="text/javascript" src="http://malsup.github.io/jquery.blockUI.js"></script>
-	<script type="text/javascript" src="../js/helper.js"></script>
 	<script type="text/javascript">
 		var playlistState = "ERROR_1";
 		var canWebsocket = "true";
@@ -110,6 +33,135 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 		var tag;
 		var firstScriptTag;
 	</script>
+
+</head>
+<body>
+
+	<!-- Top navbar -->
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner noisy_net">
+			<div class="row-fluid">
+				<div class="span3"><img src="../res/logo_32.png" /></div>
+				<div class="span6"><h6 class="grey_text">Session URL: <?php echo $sessionURL; ?>    <button class="btn btn-mini push_up_3px">Copy</button></h6></div>
+				<div class="span3"><h6 class="grey_text">Logged in as  <i class="icon-user icon-white"></i> <?php print($_SESSION["nick"]); ?></h6></div>
+			</div>
+		</div>
+    </div>
+
+    <!-- Sidebar -->
+
+    <div id="sideyBar" class="noisy_net">
+    	<div class="grey_text sideyItem">
+			<h6>Videos in queue: <span id="inQueue">0</span></h6>
+		</div>
+		<div class="grey_text sideyItem">
+			<h6>Current DJ: <span id="currentDJ">&nbsp---&nbsp</span></h6>
+		</div>
+		<div class="grey_text sideyItem" style="height:55%">
+			<h6>Recent Activty: </h6>
+			<div id="footerMessage" class="box_it" ><i class="icon-chevron-right"></i>  Welcome to Sugary Asphalt !</div>
+		</div>
+		<div class="grey_text sideyItem">
+			<h6>Talk about us </h6>
+			<div class="row-fluid">
+				<div class="span4">
+					<img src="../img/twitter.png" />
+				</div>
+				<div class="span4">
+					<img src="../img/facebook.png" />
+				</div>
+				<div class="span4">
+					<img src="../img/reddit.png" />
+				</div>
+			</div>
+		</div>
+   	</div>
+	
+	<div id="bubble"></div>
+
+	<div id="content">
+		<div id="stuffs" class="jumbotron push_down">
+			<!-- Overlay div -->
+			<div id="searchStuff" style="display: none;">
+				<div id="container">
+					<div class="jumbotron">
+						<div class="row-fluid">
+							<div class="offset2 span6" ><input class="btn_padding full_width" type="text" placeholder="Search query or youtube URL here..." id="searchTerm" /></div>
+							<div class="span2" ><button class="btn btn-inverse push_up_3px"id="searchThis" ><i class="icon-search icon-white"></i> Search</button></div>
+							<div id="overlayClose" class="offset1 span1"> <img class="push_to_corner" src="../res/close.png" /> </p></div>
+						</div>
+						<hr>
+						<div id="searchResultDiv">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid padding_top_bottom_1">				
+				<!-- Video div -->
+			  	<div class="span6" id="video">
+					<div id="ytplayer">...</div>
+					<div class="soft_box margin_1em grey_text"><h6 id="message">Initalizing...<h6></div>
+				
+					<!-- Volume Controls -->
+					
+					<div id="controls" class="margin_1em row-fluid">
+						<button id="vol_down"  class="btn btn-inverse offset2 span2">&nbsp&nbsp-&nbsp&nbsp</button>
+						<button id="vol_value" class="vol_value span2">100%</button>
+						<button id="vol_up"    class="btn btn-inverse span2">&nbsp&nbsp+&nbsp&nbsp</button>
+						<button id="vol_mute"  class="btn btn-inverse span2">&nbspmute&nbsp</button>
+					</div>
+					
+					<div id="builder"class="margin_1em row-fluid">
+						<button id="searchButton" class="btn btn-inverse span4 offset2" onclick='searchThings();' disabled="disabled">Initalizing...</button>
+						<button id="ifImTheDJ"    class="btn btn-inverse span4" onclick="skipThis();"     disabled="disabled">Skip this video</button>
+					</div>
+					<div>
+						...<br>
+						Space for more stuffs<br>
+						...<br>
+					</div>
+			  	</div>
+			  	<!-- Chat div -->
+			  	<div class="span6" id="chat-box">
+			  		<div class="row-fluid white_bg padding_top_bottom_1 thick_border">
+						<div id="messageBoard" class="span8 border_right">
+							<form id="chatForm" name="chatForm" method="post" action="" onsubmit="return false;">
+								<div id="board"><!-- Chat logs loaded here --></div>
+							</form>
+						</div>
+						<div id="activePpl" class="span4">
+				  			<h6>Online Now...</h6>
+				  			<ul id="activeUsers" class="no_bullets">
+				  			</ul>
+				  		</div>
+					</div>
+					<div>
+						<textarea cols=2 class="thick_border" style="border-radius: 0px;" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" /></textarea>
+					</div>
+				</div>
+				<!--
+				<div class="navbar navbar-fixed-bottom">
+					<div class="row-fluid noisy_net">
+						
+						<div class="span2 grey_text">
+							<h6>Videos in queue: <span id="inQueue">0</span></h6>
+						</div>
+						<div class="span2 grey_text">
+						<h6>Current DJ: <span id="currentDJ">&nbsp---&nbsp</span></h6>
+						</div>
+						<div class="span8 grey_text clip_overflow">
+							<h6 id="footerMessage" >Welcome to Sugary Asphalt...!</h6>
+						</div>
+					</div>
+				</div>
+			-->
+			</div> 
+		</div>
+	</div>
+
+	<!-- Le javascript
+	================================================== -->
+	<script type="text/javascript" src="../js/helper.js"></script>
 	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
 	<script type="text/javascript" src="../js/websocketStuff.js"></script>
 	<script type="text/javascript" src="../js/overlay.js"></script>

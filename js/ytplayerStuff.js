@@ -27,14 +27,20 @@ $(window).unload(function() {
 	});
 });
 
+$(window).resize(function() {
+	logThis("The windows was resized !");
+	prepYtplayerDiv();
+	blockYtplayer();
+});
+
 function amITheDJ(){
 	logThis("Checking if I'm the DJ");
 	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
 		logThis("Yes, its me !");
-		$("#ifImTheDJ").html('<button class="btn" onclick=\'skipThis();\'>Skip this video</button>');
+		$("#ifImTheDJ").removeProp("disabled");
 	}
 	else{
-		$("#ifImTheDJ").empty();
+		$("#ifImTheDJ").prop("disabled",true);
 	}
 }
 
@@ -89,22 +95,51 @@ function makeControlsLive(){
 	});
 }
 
-// Replace the 'ytplayer' element with an <iframe> and
-// YouTube player after the API code downloads.
+function prepYtplayerDiv(){
+	var divPlayer = $("#ytplayer");
+	var w = divPlayer.width();
+	var h = ((9/16)*w);
+	divPlayer.height(h);
+}
+
+function blockYtplayer(){
+	var bubble = $("#bubble");
+	var divPlayer = $("#ytplayer");
+	var posYtplayer = divPlayer.position();
+
+	bubble.css({
+	    "position":"absolute", 
+	    "top": posYtplayer.top + "px",
+	    "left": posYtplayer.left + "px",
+	});
+	bubble.width(divPlayer.width());
+	bubble.height(divPlayer.height());
+}
+
 function onYouTubePlayerAPIReady() {
 	logThis("Yes, youtube API ready.");
+	//Activate player controls
+	$("#searchButton").html("Add video to queue");
+	$("#searchButton").removeAttr("disabled");
+
 	if(canWebsocket){
 		doThings();
 	}
 	else{
 		checkPlaylist = setInterval(doThings, 2000);
 	}
-	$("#playlistBuilder").html("Add URL to Playlist");
-	$("#playlistBuilder").removeAttr("disabled");
-	$("#searchButton").html("Search for Video");
-	$("#searchButton").removeAttr("disabled");
-	$("#URLAdd").removeAttr("disabled");
-	
+}
+
+function getInQueue(){
+	$.ajax({
+		url: "siq.php",
+		cache: false,
+		async: false,
+		success: function(response){
+			setInQueue(response);
+		}
+		
+	});
 }
 
 function readForNext(){
@@ -118,14 +153,14 @@ function readForNext(){
 				$("#message").html("Nothing to play yet...!");
 				playlistState = "ERROR_1";
 				currentDJ = null;
-				$("#currentDJ").html("&nbsp---&nbsp");
+				setCurrentDJ(" --- ");
 				currentDJ = null;
 			}
 			else if(response == "ERROR_2"){
 				$("#message").html("Playlist finished, please add more videos...!");
 				playlistState = "ERROR_2";
 				currentDJ = null;
-				$("#currentDJ").html("&nbsp---&nbsp");
+				setCurrentDJ(" --- ");
 				currentDJ = null;
 			}
 			else{
@@ -139,7 +174,7 @@ function readForNext(){
 				    dataType: "jsonp",
 				    success: function (data){
 				    	$("#message").html("&#9658; " + data.entry.title.$t);
-				    	$("#currentDJ").html(currentDJ);
+						setCurrentDJ(currentDJ);
 					},
 					error: function(data){
 						logThis("youtube request failed with "+data);
@@ -151,7 +186,8 @@ function readForNext(){
 					clearInterval(getNext);
 				}
 			}
-			amITheDJ();						
+			amITheDJ();
+			getInQueue();
 	  	},
 	});
 }
@@ -208,17 +244,18 @@ function doThings(){
 				    dataType: "jsonp",
 				    success: function (data){
 				    	$("#message").html("&#9658; " + data.entry.title.$t);
-				    	$("#currentDJ").html(currentDJ);
+						setCurrentDJ(currentDJ);
 						},
 					error: function(data){
 						logThis("youtube request failed with "+data);
 					}
 				});
+				var h = ($("#ytplayer").width()*(9/16));
 				player = new YT.Player('ytplayer', {
-					   height: '200',
-					   width: '325',
+					   height: h,
 					   videoId: currentlyPlaying,
 					   playerVars: {
+					   	wmode: 'opaque',
 					   	autoplay: '1',
 					   	vq: 'small',
 					   	controls: '0',
@@ -235,7 +272,8 @@ function doThings(){
 					clearInterval(checkPlaylist);
 				}
 				amITheDJ();
-				$("#ytplayer").block({ message: null });
+				blockYtplayer();
+				getInQueue();
 			}						
 	  	},
 	});
@@ -273,8 +311,6 @@ function addThings(){
 													if(canWebsocket){
 														connection.send(JSON.stringify(msg));
 													}
-	                								$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
-
 	                								$.ajax({
 														url: "build.php?vid="+vID,
 														cache: false,
@@ -293,16 +329,4 @@ function addThings(){
 			}
 		}
     }
-}
-
-function searchThings(){
-	var searchStuff = $("#searchStuff");
-	if($("#searchStuff").css('display') == "none"){
-		$("#searchStuff").css('display', "");
-	}
-	else{
-		$("#searchStuff").css('display', "none");
-		$("#searchStuff").html("");
-	}
-	return false;
 }

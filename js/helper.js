@@ -71,11 +71,41 @@ function validateURL(url) {
 
 function logThis(msg){
 	//comment the return to turn on debugging -- TO REMOVE
-	//return true;
+	return true;
 	if (console && console.log) {
 	    console.log(msg);
     }
 	else{
 		//Do nothing for browsers for which console does not exist
+	}
+}
+
+function setCurrentDJ(name){
+	var temp = $("#currentDJ");
+	if(temp){
+		temp.html(name);
+	}
+	else{
+		logthis("Could not select #currentDJ...");
+	}
+}
+
+function setInQueue(number){
+	var temp = $("#inQueue");
+	if(temp){
+		temp.html(number);
+	}
+	else{
+		logthis("Could not select #inQueue...");
+	}
+}
+
+function setFooterMessage(msg){
+	var temp = $("#footerMessage");
+	if(temp){
+		temp.append("<br><br><i class=\"icon-chevron-right\"></i>  " + msg);
+	}
+	else{
+		logthis("Could not select #footerMessage...");
 	}
 }

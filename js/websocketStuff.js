@@ -45,6 +45,11 @@ $(function () {
 
 	//Set height of chat log box
 	content.height(($(window).height())*0.63);
+	$("#activePpl").css("max-height", content.height());
+	
+	$("#ytplayer").ready(function(){
+		prepYtplayerDiv();
+	});
 
 	//Check for submit of chatBox
 	input.keydown(function(e) {
@@ -127,15 +132,19 @@ $(function () {
 			}
 			else if (json.type === 'system') { 
 				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+				setFooterMessage(json.data.text);
 				var temp = json.data.activeUsers;
 				var activeUsers = temp.split(";");
 				$("#activeUsers").empty();
 				for (var i=0; i < activeUsers.length-1; i++) {
 					logThis(activeUsers[i]);
-					$("#activeUsers").append('<li><p>'+activeUsers[i]+'</p></li>');
+					$("#activeUsers").append('<li><i class="icon-user"></i <p>'+activeUsers[i]+'</p></li>');
 				}
 			}
 			else if (json.type === 'ytplayer') {
+				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+				setFooterMessage(json.data.text);
+				getInQueue();
 				if(playlistState === "ERROR_1" || playlistState === "ERROR_2"){
 					if(player){
 						//Player already intiated
@@ -146,7 +155,6 @@ $(function () {
 						doThings();
 					}
 				}
-				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
 			}
 			else if (json.type === 'control') { 
 				if(json.operation === 'skipToNext' && json.step === 'fin'){
@@ -154,6 +162,7 @@ $(function () {
 						logThis("Skipping to next video");
 						player.stopVideo();
 						writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+						setFooterMessage(json.data.text);
 						$.ajax({
 							url: "next.php?cPlay="+currentlyPlaying,
 							async: false,
