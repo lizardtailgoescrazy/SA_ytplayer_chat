@@ -71,7 +71,7 @@ function validateURL(url) {
 
 function logThis(msg){
 	//comment the return to turn on debugging -- TO REMOVE
-	return true;
+	//return true;
 	if (console && console.log) {
 	    console.log(msg);
     }

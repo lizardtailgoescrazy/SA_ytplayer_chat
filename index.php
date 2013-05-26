@@ -39,7 +39,7 @@ if(isset($_SESSION["errorURL"])){
 	<body>
 		<div class="container-narrow">
 			<div class="jumbotron jumbotron_margin">
-				<img class="margin_1em" src="res/logo_64.png" />
+				<img class="margin_1em" src="res/logo_128.png" />
 				<?php print $usernameMsg; ?>
 				<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
 					<div class="control-group">

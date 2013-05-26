@@ -34,6 +34,8 @@ function searchThings(){
 		$("#searchStuff").css('display', "");
 		//$("#searchStuff").html(overlayDisplay);
 		$("#overlayClose").click(function(){
+			$("#searchResultDiv").html("");
+			$("#searchTerm").val("");
 			$("#searchStuff").css('display', "none");
 		});
 		//On click handler for search button
@@ -65,6 +67,8 @@ function searchThings(){
 										$("#searchStuff").css('display', "none");
 										//$("#searchStuff").html("");
 										addThingsFromSearch($(this).attr('destination'));
+										$("#searchResultDiv").html("");
+										$("#searchTerm").val("");
 									});
 								}						
 							},
@@ -106,9 +110,6 @@ function searchThings(){
 											logThis("youtube request failed with "+data);
 										}
 									});
-								setTimeout(function() {
-								  $("#videoDetails").fadeOut().empty();
-								}, 5000);
 							}
 						}
 					}
@@ -118,6 +119,7 @@ function searchThings(){
 
 		//Auto complete handler for textbox
 		$("#searchTerm").ready(function(){
+			logThis("Applying autocomplete to #searchTerm");
 			var searchTerm = $("#searchTerm");
 			searchTerm.autocomplete({ 
 				source: function(request, response) {

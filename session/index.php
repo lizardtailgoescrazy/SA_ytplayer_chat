@@ -41,7 +41,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner noisy_net">
 			<div class="row-fluid">
-				<div class="span3"><img src="../res/logo_32.png" /></div>
+				<div class="span3" style="padding: 0.5em 0px 0px 1em;" ><img src="../res/logo_32.png" /></div>
 				<div class="span6"><h6 class="grey_text">Session URL: <?php echo $sessionURL; ?>    <button class="btn btn-mini push_up_3px">Copy</button></h6></div>
 				<div class="span3"><h6 class="grey_text">Logged in as  <i class="icon-user icon-white"></i> <?php print($_SESSION["nick"]); ?></h6></div>
 			</div>
