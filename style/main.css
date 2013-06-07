@@ -27,6 +27,7 @@ textarea {
 		left:0px;
 		width: 15%;
 		height: 100%;
+		z-index: 1031;
 	}
 
 	#content{
@@ -192,6 +193,10 @@ textarea {
 
 	.sideyItem:last-child{
 		padding-bottom: 1em;
+	}
+
+	.logo{
+		margin: 2em 1em;
 	}
 
 	.box_it{

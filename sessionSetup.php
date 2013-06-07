@@ -58,38 +58,7 @@ else{
                     }
                     break;
                 }
-            }
-            //If you reach here invalid session URL
-
-            
-            //With URL rewriting
-            /*
-            $URL = str_replace('\\', '/', $URL);
-            $temp = explode("/", $URL);
-            $i = 0;
-            foreach($temp as &$arg){
-                if($arg == $nextDir){
-                    break;
-                }
-                $i++;
-            }
-            if($i >= sizeof($temp)){
-                $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
-                header("Location: ".$homepage); 
-            }
-            else{
-
-                $_SESSION["sno"] = $temp[$i+1];
-
-                if(!is_dir($nextDir."/".$_SESSION["sno"])){
-                    $_SESSION["errorURL"]="No such session exists, the URL may be incorrect or the session may have expired due to lack of participants !";
-                    header("Location: ".$homepage); 
-                }
-                else{
-                    header( "Location: $nextDir/".$_SESSION["sno"]);
-                }
-                
-            }  */         
+            }         
         }
     }
 }

@@ -39,7 +39,10 @@ if(isset($_SESSION["errorURL"])){
 	<body>
 		<div class="container-narrow">
 			<div class="jumbotron jumbotron_margin">
-				<img class="margin_1em" src="res/logo_128.png" />
+				<img class="margin_1em" src="res/logo.png" />
+				<h4>Watch youtube with your friends, collaborate on a playlist together...!</h4>
+				<h4>Just pick a screen name and start watching...!</h4>
+				<br>
 				<?php print $usernameMsg; ?>
 				<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
 					<div class="control-group">
@@ -51,6 +54,7 @@ if(isset($_SESSION["errorURL"])){
 					<div class="control-group">
 						<button class="btn" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new session</button>
 					</div>
+					
 					<?php 
 					//End of Dont show below if the user did not come here directly
 					} ?>
@@ -62,21 +66,28 @@ if(isset($_SESSION["errorURL"])){
 						<button class="btn" type="submit" onClick="return checkForJoin();" name="sessionJoin">Join this session</button>
 					</div>
 				</form>
+				<div id="warningArea">
+				</div>
 			</div>
-			<div id="warningArea">
-			</div>
-
 		</div>
 		<!-- Le javascript
 	    ================================================== -->
 	    <!-- Placed at the end of the document so the pages load faster -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 		<script type="text/javascript" src="js/helper.js"></script>
+		<script src="http://54.218.12.208:1337/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			if (checkForWebsockets() == false){
-				$("#warningArea").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. You will be unable to use the chat but the YouTube player will still work !</b></p>");
-				$("#warningArea").addClass("jumbotron");
+				$("#warningArea").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. Please use the latets version of Firefox/Chrome/Safari to use this web app.</b></p>");
+				$("button").attr('disabled', 'disabled');
+				$("input").attr('disabled', 'disabled');
+			}
+			if (typeof io == 'undefined') {  
+			    $("#warningArea").html("<p class='errorSpace'><b>Sorry, there seems to be a problem with our servers, please refresh this page. If this problem persists, please try again after some time, we are trying to fix the problem.</b></p>");
+			    $("button").attr('disabled', 'disabled');
+			    $("input").attr('disabled', 'disabled');
 			}
 		</script>
+
 	</body>
 </html>

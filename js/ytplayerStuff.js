@@ -53,7 +53,7 @@ function skipThis(){
 		    step: "init"
 		};
 		if(canWebsocket){
-			connection.send(JSON.stringify(msg));
+			socket.emit('control',JSON.stringify(msg));
 		}
 	}
 }
@@ -91,6 +91,12 @@ function makeControlsLive(){
 				$("#vol_mute").text(" unmute ");
 				player.mute();
 			}
+		}
+	});
+
+	$("#exportPl").click(function(){
+		if(playlistState != "ERROR_1"){
+			window.open("exportPl.php");
 		}
 	});
 }
@@ -309,7 +315,7 @@ function addThings(){
 													    name: title
 													};
 													if(canWebsocket){
-														connection.send(JSON.stringify(msg));
+														socket.emit('ytplayer',JSON.stringify(msg));
 													}
 	                								$.ajax({
 														url: "build.php?vid="+vID,

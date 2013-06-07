@@ -4,6 +4,18 @@ function markElementsForError(){
 	input.html("Connection error.");
 }
 
+function properJson(data){
+	logThis(data);
+	// Parse JSON object
+	try {
+		var json = JSON.parse(data);
+	} 
+	catch (e) {
+		return false;
+	}
+	return json;
+}
+
 
 $(function () {
 	"use strict";
@@ -43,13 +55,6 @@ $(function () {
 		})();
 	}
 
-	$("#copyURL").ready(function(){
-		$('#copyURL').zclip({
-			path:'../res/ZeroClipboard.swf',
-			copy:$('#topSessionURL').html()
-		});
-	});
-
 	//Set height of chat log box
 	content.height(($(window).height())*0.63);
 	$("#activePpl").css("max-height", content.height());
@@ -71,7 +76,7 @@ $(function () {
 			    message: msg,
 			};
 
-			connection.send(JSON.stringify(prepedMsg));
+			socket.emit('message',JSON.stringify(prepedMsg));
 			$(this).val('');
 			// disable the input field to make the user wait until server
 			// sends back response
@@ -86,11 +91,13 @@ $(function () {
 		content.prop('disabled', 'disabled');
 	}
 	else{
-		connection = new WebSocket('ws://54.214.33.188:1337');
-		//connection = new WebSocket('ws://arbiter:1337');
 
-		connection.onopen = function () {
-			//enable and clear chatbox
+		socket = io.connect('http://54.218.12.208:1337');
+		//socket = io.connect('http://arbiter:1337');
+
+
+		socket.on('connect', function () {
+            //enable and clear chatbox
 			$("#chatBox").val("");
 			$("#chatBox").removeAttr('disabled');
 			var msg = {
@@ -99,46 +106,38 @@ $(function () {
 			    username:   sessionUsername,
 			    date: Date.now()
 			};
-			connection.send(JSON.stringify(msg));
-		};
+			socket.emit('setup', JSON.stringify(msg));
+        });
 
-		connection.onerror = function (error) {
-			markElementsForError();
+        socket.on('error', function (data) {
+           markElementsForError();
 			canWebsocket = false;
 			if(!checkPlaylist){
 				checkPlaylist = setInterval(doThings, 2000);
 			}
-		};
+        });
 
-		//On incoming message
-		connection.onmessage = function (message) {
-			// Parse JSON object
-			try {
-				var json = JSON.parse(message.data);
-			} 
-			catch (e) {
-				logThis('This doesn\'t look like a valid JSON: ', message.data);
-				return;
+        socket.on('connect_failed', function (data) {
+            markElementsForError();
+			canWebsocket = false;
+			if(!checkPlaylist){
+				checkPlaylist = setInterval(doThings, 2000);
 			}
+        });
 
-			if (json.type === 'color') { 
-				//Removed this feature, no use, extra processing
-			} 
-			//History is unimplemented as of now
-			//else if (json.type === 'history') { 
-			//	for (var i=0; i < json.data.length; i++) {
-			//		writeMessage(json.data[i].author, json.data[i].text,
-			//			json.data[i].color, new Date(json.data[i].time));
-			//	}
-			//} 
-			else if (json.type === 'message') { 
-				// it's a single message
+
+        socket.on('message', function(data){
+        	var json = properJson(data);
+        	// it's a single message
 				input.removeAttr('disabled'); // let the user write another message
 				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
 
-			}
-			else if (json.type === 'system') { 
-				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+        });
+
+        socket.on('system', function(data){
+        	var json = properJson(data);
+        	logThis(json);
+        	writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
 				setFooterMessage(json.data.text);
 				var temp = json.data.activeUsers;
 				var activeUsers = temp.split(";");
@@ -147,24 +146,11 @@ $(function () {
 					logThis(activeUsers[i]);
 					$("#activeUsers").append('<li><i class="icon-user"></i <p>'+activeUsers[i]+'</p></li>');
 				}
-			}
-			else if (json.type === 'ytplayer') {
-				writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
-				setFooterMessage(json.data.text);
-				getInQueue();
-				if(playlistState === "ERROR_1" || playlistState === "ERROR_2"){
-					if(player){
-						//Player already intiated
-						readForNext();
-					}
-					else{
-						//Player un-intiated
-						doThings();
-					}
-				}
-			}
-			else if (json.type === 'control') { 
-				if(json.operation === 'skipToNext' && json.step === 'fin'){
+        });
+
+        socket.on('control', function(data){
+        	var json = properJson(data);
+        	if(json.operation === 'skipToNext' && json.step === 'fin'){
 					if(trimStuff(json.data.author) === trimStuff(currentDJ)){
 						logThis("Skipping to next video");
 						player.stopVideo();
@@ -185,11 +171,24 @@ $(function () {
 							getNext = setInterval(readForNext, 1000);
 						}
 					}
+			}
+        });
+
+        socket.on('ytplayer', function(data){
+        	var json = properJson(data);
+        	writeMessage(json.data.author, json.data.text,json.data.color, new Date(json.data.time));
+				setFooterMessage(json.data.text);
+				getInQueue();
+				if(playlistState === "ERROR_1" || playlistState === "ERROR_2"){
+					if(player){
+						//Player already intiated
+						readForNext();
+					}
+					else{
+						//Player un-intiated
+						doThings();
+					}
 				}
-			}
-			else {
-				logThis('Incompatible JSON: ', json);
-			}
-		};
+        });
 	}
 });

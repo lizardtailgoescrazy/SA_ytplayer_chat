@@ -24,12 +24,14 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     <link href="../style/bootstrap-responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/autocomplete.css" />
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 	<script type="text/javascript">
 		var playlistState = "ERROR_1";
 		var canWebsocket = "true";
 		var checkPlaylist;
 		var sessionUsername = <?php print("\"".$_SESSION["nick"]."\""); ?>;
 		var connection;
+		var socket;
 		var tag;
 		var firstScriptTag;
 	</script>
@@ -41,8 +43,8 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner noisy_net">
 			<div class="row-fluid">
-				<div class="span3" style="padding: 0.5em 0px 0px 1em;" ><img src="../res/logo_32.png" /></div>
-				<div class="span6"><h6 class="grey_text">Session URL: <?php echo $sessionURL; ?>    <button class="btn btn-mini push_up_3px">Copy</button></h6></div>
+				<div class="span3" style="padding: 0.5em 0px 0px 1em;" >...</div>
+				<div class="span6"><h6 class="grey_text">Session URL: <?php echo $sessionURL; ?>&nbsp&nbsp <button class="btn btn-small push_up_3px" id="copy"> Copy </button></h6></div>
 				<div class="span3"><h6 class="grey_text">Logged in as  <i class="icon-user icon-white"></i> <?php print($_SESSION["nick"]); ?></h6></div>
 			</div>
 		</div>
@@ -51,13 +53,14 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     <!-- Sidebar -->
 
     <div id="sideyBar" class="noisy_net">
+    	<div class="logo"><img style="margin: auto;" src="../res/logo.png" /></div>
     	<div class="grey_text sideyItem">
 			<h6>Videos in queue: <span id="inQueue">0</span></h6>
 		</div>
 		<div class="grey_text sideyItem">
 			<h6>Current DJ: <span id="currentDJ">&nbsp---&nbsp</span></h6>
 		</div>
-		<div class="grey_text sideyItem" style="height:55%">
+		<div class="grey_text sideyItem" style="height:36%">
 			<h6>Recent Activty: </h6>
 			<div id="footerMessage" class="box_it" ><i class="icon-chevron-right"></i>  Welcome to Sugary Asphalt !</div>
 		</div>
@@ -115,10 +118,15 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 						<button id="searchButton" class="btn btn-inverse span4 offset2" onclick='searchThings();' disabled="disabled">Initalizing...</button>
 						<button id="ifImTheDJ"    class="btn btn-inverse span4" onclick="skipThis();"     disabled="disabled">Skip this video</button>
 					</div>
+					<div id="builder"class="margin_1em row-fluid">
+						<button id="exportPl" class="btn btn-inverse span4 offset2">Export this playlist </button>
+					</div>
 					<div>
 						...<br>
 						Space for more stuffs<br>
 						...<br>
+
+							
 					</div>
 			  	</div>
 			  	<!-- Chat div -->
@@ -139,32 +147,23 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 						<textarea cols=2 class="thick_border" style="border-radius: 0px;" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" /></textarea>
 					</div>
 				</div>
-				<!--
-				<div class="navbar navbar-fixed-bottom">
-					<div class="row-fluid noisy_net">
-						
-						<div class="span2 grey_text">
-							<h6>Videos in queue: <span id="inQueue">0</span></h6>
-						</div>
-						<div class="span2 grey_text">
-						<h6>Current DJ: <span id="currentDJ">&nbsp---&nbsp</span></h6>
-						</div>
-						<div class="span8 grey_text clip_overflow">
-							<h6 id="footerMessage" >Welcome to Sugary Asphalt...!</h6>
-						</div>
-					</div>
-				</div>
-			-->
 			</div> 
 		</div>
 	</div>
 
 	<!-- Le javascript
 	================================================== -->
+	<script src="http://54.218.12.208:1337/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="ZeroClipboard.js"></script>
 	<script type="text/javascript" src="../js/helper.js"></script>
 	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
-	<script type="text/javascript" src="../js/websocketStuff.js"></script>
+	<script type="text/javascript" src="../js/socket_io.js"></script>
 	<script type="text/javascript" src="../js/overlay.js"></script>
+	<script type="text/javascript" >
+		var clip = new ZeroClipboard.Client();
+		clip.setText('<?php echo $sessionURL; ?>');
+		clip.glue('copy');
+	</script>
 
 </body>
 </html>

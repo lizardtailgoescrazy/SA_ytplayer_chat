@@ -21,7 +21,7 @@ function addThingsFromSearch(vid){
 										    name: title
 										};
 										if(canWebsocket){
-											connection.send(JSON.stringify(msg));
+											socket.emit('ytplayer',JSON.stringify(msg));
 										}
         							}
     		});
@@ -94,7 +94,7 @@ function searchThings(){
 																		name: title
 																	};
 																	if(canWebsocket){
-																		connection.send(JSON.stringify(msg));
+																		socket.emit('ytplayer',JSON.stringify(msg));
 																	}
 																	$("#videoDetails").html("<p>You just added <b>"+title+"</b> to the playlist !</p>");
 
@@ -148,9 +148,9 @@ function searchThings(){
 					searchTerm.autocomplete('search', ui.item.value);
 				},
 				close : function (event, ui) {
-					val = searchTerm.val();
-					searchTerm.autocomplete( "search", val );
-					searchTerm.blur();
+					//val = searchTerm.val();
+					//searchTerm.autocomplete( "search", val );
+					//searchTerm.blur();
 				}
 			});
 		});	
