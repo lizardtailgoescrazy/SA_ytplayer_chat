@@ -40,32 +40,41 @@ if(isset($_SESSION["errorURL"])){
 		<div class="container-narrow">
 			<div class="jumbotron jumbotron_margin">
 				<img class="margin_1em" src="res/logo.png" />
-				<h4>Watch youtube with your friends, collaborate on a playlist together...!</h4>
-				<h4>Just pick a screen name and start watching...!</h4>
+				<p>Watch youtube with your friends, collaborate on a playlist together!</p>
+				<p>Just pick a screen name and start watching...!</p>
 				<br>
 				<?php print $usernameMsg; ?>
-				<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
-					<div class="control-group">
-						<input type="text" name="username" id="username" placeholder="pick a username"></input>
-					</div>
-					<?php if($directURLFlag == false){ 
-					//Dont show below if the user did not come here directly
-						?>
-					<div class="control-group">
-						<button class="btn" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new session</button>
-					</div>
-					
-					<?php 
-					//End of Dont show below if the user did not come here directly
-					} ?>
-					<?php print $urlMsg;?>
-					<div class="control-group">
-						<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
-					</div>
-					<div class="control-group">
-						<button class="btn" type="submit" onClick="return checkForJoin();" name="sessionJoin">Join this session</button>
-					</div>
-				</form>
+				
+				<div class="row-fluid well well-small">
+					<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
+						<div class="span6 pull-left">
+							<h6>Create your own room!</h6>
+							<div class="control-group">
+								<input type="text" name="username" id="username" placeholder="Enter a username"></input>
+							</div>
+							<?php if($directURLFlag == false){ 
+							//Dont show below if the user did not come here directly
+							?>
+							<div class="control-group">
+								<button class="btn btn-small" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Create!</button>
+							</div>
+						</div>
+						<div class="span6 pull-right" style="border-left: 1px solid #b3b3b3;">
+							<h6>Join an existing room!</h6>
+							<?php 
+							//End of Dont show below if the user did not come here directly
+							} ?>
+							<?php print $urlMsg;?>
+							<div class="control-group">
+								<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
+							</div>
+							<div class="control-group">
+								<button class="btn" type="submit" onClick="return checkForJoin();" name="sessionJoin">Join!</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
 				<div id="warningArea">
 				</div>
 			</div>
