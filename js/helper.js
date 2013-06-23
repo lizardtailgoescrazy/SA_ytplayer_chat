@@ -104,10 +104,15 @@ function setInQueue(number){
 
 function setFooterMessage(msg){
 	var temp = $("#footerMessage");
+	var oldscrollHeight = temp.prop("scrollHeight") - 20;
 	if(temp){
 		temp.append("<br><br><i class=\"icon-chevron-right\"></i>  " + msg);
 	}
 	else{
 		logthis("Could not select #footerMessage...");
+	}
+	var newscrollHeight = temp.prop("scrollHeight") - 20;
+	if(newscrollHeight > oldscrollHeight){
+		temp.animate({ scrollTop: newscrollHeight }, 'normal');
 	}
 }

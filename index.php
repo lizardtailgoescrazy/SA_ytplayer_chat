@@ -38,43 +38,45 @@ if(isset($_SESSION["errorURL"])){
 </head>
 	<body>
 		<div class="container-narrow">
-			<div class="jumbotron jumbotron_margin">
+			<div class="jumbotron">
 				<img class="margin_1em" src="res/logo.png" />
-				<p>Watch youtube with your friends, collaborate on a playlist together!</p>
-				<p>Just pick a screen name and start watching...!</p>
+				<h4>Watch youtube with your friends, collaborate on a playlist together...!</h4>
+				<h4>Just pick a screen name and start watching...!</h4>
 				<br>
+				<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
 				<?php print $usernameMsg; ?>
-				
-				<div class="row-fluid well well-small">
-					<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
-						<div class="span6 pull-left">
-							<h6>Create your own room!</h6>
-							<div class="control-group">
-								<input type="text" name="username" id="username" placeholder="Enter a username"></input>
-							</div>
-							<?php if($directURLFlag == false){ 
-							//Dont show below if the user did not come here directly
-							?>
-							<div class="control-group">
-								<button class="btn btn-small" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Create!</button>
-							</div>
+					<div class="control-group">
+						<div class="input-prepend" style="width: 80%;">
+							<span class="add-on" style="padding: 0.5em">Screen name&nbsp;&nbsp;&nbsp;</span>
+							<input type="text" name="username" id="username" placeholder="Enter screen name here..."></input>
 						</div>
-						<div class="span6 pull-right" style="border-left: 1px solid #b3b3b3;">
-							<h6>Join an existing room!</h6>
-							<?php 
-							//End of Dont show below if the user did not come here directly
-							} ?>
-							<?php print $urlMsg;?>
-							<div class="control-group">
-								<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL" <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
-							</div>
-							<div class="control-group">
-								<button class="btn" type="submit" onClick="return checkForJoin();" name="sessionJoin">Join!</button>
-							</div>
+					</div>
+					<?php if($directURLFlag == false){ 
+					//Dont show below if the user did not come here directly
+						?>
+					<div class="control-group">
+						<button class="btn btn-large btn-inverse" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new room...!</button>
+					</div>
+					
+					<?php 
+					//End of Dont show below if the user did not come here directly
+					} 
+					else{
+					?>
+					<?php print $urlMsg;?>
+					<div class="control-group">
+						<div class="input-prepend" style="width: 80%;">
+							<span class="add-on" style="padding: 0.5em">Room address&nbsp;</span>
+							<input type="text" name="sessionURL" id="sessionURL" placeholder="Enter session URL here..." <?php if($directURLFlag == true){print("value=".$URL);} ?> ></input>
 						</div>
-					</form>
-				</div>
-
+					</div>
+					<div class="control-group">
+						<button class="btn btn-large btn-inverse" type="submit" onClick="return checkForJoin();" name="sessionJoin">Join this room...!</button>
+					</div>
+					<?php
+					}
+					?>
+				</form>
 				<div id="warningArea">
 				</div>
 			</div>
@@ -84,10 +86,11 @@ if(isset($_SESSION["errorURL"])){
 	    <!-- Placed at the end of the document so the pages load faster -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 		<script type="text/javascript" src="js/helper.js"></script>
+		<!--<script src="http://arbiter:1337/socket.io/socket.io.js"></script>-->
 		<script src="http://54.218.12.208:1337/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			if (checkForWebsockets() == false){
-				$("#warningArea").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. Please use the latets version of Firefox/Chrome/Safari to use this web app.</b></p>");
+				$("#warningArea").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. Please use the latest version of Firefox/Chrome/Safari to use this web app.</b></p>");
 				$("button").attr('disabled', 'disabled');
 				$("input").attr('disabled', 'disabled');
 			}
@@ -97,6 +100,5 @@ if(isset($_SESSION["errorURL"])){
 			    $("input").attr('disabled', 'disabled');
 			}
 		</script>
-
 	</body>
 </html>

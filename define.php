@@ -1,5 +1,5 @@
 <?php
-	$homepage = "http://localhost/sugar";
+	$homepage = "http://localhost/SA_ytplayer_chat";
 	$lengthOfID = 8;
 	$nextDir = "session";
 ?>

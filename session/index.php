@@ -30,7 +30,6 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 		var canWebsocket = "true";
 		var checkPlaylist;
 		var sessionUsername = <?php print("\"".$_SESSION["nick"]."\""); ?>;
-		var connection;
 		var socket;
 		var tag;
 		var firstScriptTag;
@@ -60,11 +59,11 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 		<div class="grey_text sideyItem">
 			<h6>Current DJ: <span id="currentDJ">&nbsp---&nbsp</span></h6>
 		</div>
-		<div class="grey_text sideyItem" style="height:36%">
+		<div class="grey_text sideyItem no_border" style="height:30%">
 			<h6>Recent Activty: </h6>
 			<div id="footerMessage" class="box_it" ><i class="icon-chevron-right"></i>  Welcome to Sugary Asphalt !</div>
 		</div>
-		<div class="grey_text sideyItem">
+		<div class="grey_text sideyItem no_border">
 			<h6>Talk about us </h6>
 			<div class="row-fluid">
 				<div class="span4">
@@ -99,7 +98,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 					</div>
 				</div>
 			</div>
-			<div class="row-fluid padding_top_bottom_1">				
+			<div class="row-fluid">				
 				<!-- Video div -->
 			  	<div class="span6" id="video">
 					<div id="ytplayer">...</div>

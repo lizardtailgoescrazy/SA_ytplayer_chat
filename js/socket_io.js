@@ -48,7 +48,7 @@ $(function () {
 	{	
 		(function(){
 			var a = document.createElement('script');
-			a.src = 'https:' + '//s.ytimg.com/yts/jsbin/www-widgetapi-vflEwv9hv.js';
+			a.src = 'http://www.youtube.com/player_api';
 			a.async = false;
 			var b = document.getElementsByTagName('script')[0];
 			b.parentNode.insertBefore(a, b);

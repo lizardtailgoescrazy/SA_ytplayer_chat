@@ -160,14 +160,12 @@ function readForNext(){
 				playlistState = "ERROR_1";
 				currentDJ = null;
 				setCurrentDJ(" --- ");
-				currentDJ = null;
 			}
 			else if(response == "ERROR_2"){
 				$("#message").html("Playlist finished, please add more videos...!");
 				playlistState = "ERROR_2";
 				currentDJ = null;
 				setCurrentDJ(" --- ");
-				currentDJ = null;
 			}
 			else{
 				//$("#message").html("");

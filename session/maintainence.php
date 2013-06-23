@@ -20,22 +20,30 @@
 		}
 		rmdir($dirPath);
 	}
-
-	$dir = '/hugedisk/Tanayk/temp/yttt';
+	$scriptName = "maintainence.php";
+	$scriptPath = __FILE__;
+	$scriptPath = substr($scriptPath, 0, strlen($scriptPath) - strlen($scriptName));
+	//print($scriptPath."\n");
+	$logFile = $scriptPath."logMaintainence.log";
+	chdir($scriptPath);
+	file_put_contents($logFile, "Changed directory to $scriptPath.\n", FILE_APPEND);
+	
+	$dir = $scriptPath;
 	$files = scandir($dir, 1);
 	$time = date("d-m-Y H:i:s");
-	print("\n\n\n***** $time => PERFORMING CLEANUP !!! *****\n");
+	file_put_contents($logFile, "\n\n\n***** $time => PERFORMING CLEANUP !!! *****\n", FILE_APPEND);
 	foreach ($files as $key) {
 		if(($key != ".") && ($key !="..")){
 			if(is_dir($dir."/".$key)){
 				$pplHere = file_get_contents($dir."/".$key."/peopleHere");
-				print("Session[$key]: ".$pplHere);
+				file_put_contents($logFile, "Session[$key]: ".$pplHere, FILE_APPEND);
 				if($pplHere <= 0){
-					print(" - Deleting this session...!");
+					file_put_contents($logFile, "    - Deleting this session...!", FILE_APPEND);
 					deleteDir($dir."/".$key);
 				}
-				print("\n");
+				file_put_contents($logFile, "\n", FILE_APPEND);
 			}
 		}
 	}
+	file_put_contents($logFile, "\n***** $time => CLEANUP COMPLETED !!! *****\n\n\n\n", FILE_APPEND);
 ?>

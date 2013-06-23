@@ -192,7 +192,8 @@ textarea {
 	}
 
 	.sideyItem:last-child{
-		padding-bottom: 1em;
+		border: solid 0px black;
+		margin-bottom: 0px;
 	}
 
 	.logo{
@@ -205,6 +206,10 @@ textarea {
 		border: solid 1px #393939;
 		height: 90%;
 		overflow-y: auto;
+	}
+
+	.no_border{
+		border: solid 0px black;
 	}
 
 	/*Helper CSS*/
