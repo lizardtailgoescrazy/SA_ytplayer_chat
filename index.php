@@ -39,23 +39,23 @@ if(isset($_SESSION["errorURL"])){
 	<body>
 		<div class="container-narrow">
 			<div class="jumbotron">
-				<img class="margin_1em" src="res/logo.png" />
-				<h4>Watch youtube with your friends, collaborate on a playlist together...!</h4>
-				<h4>Just pick a screen name and start watching...!</h4>
+				<img class="margin_1em" src="res/logo2.png" />
+				<h4 style="color:white;">Watch youtube with your friends, collaborate on a playlist together</h4>
+				<h4 style="color:white;">Just pick a screen name and start watching!</h4>
 				<br>
 				<form class="form-horizontal" id="sessionStuff" method="POST" action="sessionSetup.php">
 				<?php print $usernameMsg; ?>
 					<div class="control-group">
 						<div class="input-prepend" style="width: 80%;">
 							<span class="add-on" style="padding: 0.5em">Screen name&nbsp;&nbsp;&nbsp;</span>
-							<input type="text" name="username" id="username" placeholder="Enter screen name here..."></input>
+							<input type="text" name="username" id="username" placeholder="Enter screen name here"></input>
 						</div>
 					</div>
 					<?php if($directURLFlag == false){ 
 					//Dont show below if the user did not come here directly
 						?>
 					<div class="control-group">
-						<button class="btn btn-large btn-inverse" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new room...!</button>
+						<button class="btn btn-large btn-inverse" type="submit" onClick="return checkForNew();" value="Start a new session" name="sessionStart" id="sessionStart">Start a new room!</button>
 					</div>
 					
 					<?php 

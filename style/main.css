@@ -1,11 +1,18 @@
 /* HTML elements */
 
+html { 
+  background: url(../res/temp2.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body{
 	font-size: 18px;
 	font-family: 'Noto Sans', sans-serif;
 	color: black;
 	text-outline: 2px 2px white;
-	background: url(../res/debut_light.png);
 }
 
 h2{
@@ -133,7 +140,7 @@ textarea {
 	.jumbotron {
 		text-align: center;
 		padding: 20px;
-		background: url(../res/debut_light.png);
+		/*background: url(../res/debut_light.png);*/
 	}
 
 	.jumbotron_margin {
