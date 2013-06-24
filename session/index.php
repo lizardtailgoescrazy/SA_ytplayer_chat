@@ -90,7 +90,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 						<div class="row-fluid">
 							<div class="offset2 span6" ><input class="btn_padding full_width" type="text" placeholder="Search query or youtube URL here..." id="searchTerm" /></div>
 							<div class="span2" ><button class="btn btn-inverse push_up_3px"id="searchThis" ><i class="icon-search icon-white"></i> Search</button></div>
-							<div id="overlayClose" class="offset1 span1"> <img class="push_to_corner" src="../res/close.png" /> </p></div>
+							<div id="overlayClose" class="offset1 span1"> <i class="icon-remove-sign push_to_corner"></i> </p></div>
 						</div>
 						<hr>
 						<div id="searchResultDiv">
