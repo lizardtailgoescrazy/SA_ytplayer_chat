@@ -47,3 +47,4 @@
 	}
 	file_put_contents($logFile, "\n***** $time => CLEANUP COMPLETED !!! *****\n\n\n\n", FILE_APPEND);
 ?>
+craft
