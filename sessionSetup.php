@@ -2,14 +2,16 @@
 session_start();
 include "define.php";
 
-if(rtrim($_POST["username"])==""){
-    $_SESSION["errorUsr"]="Please enter a username !";
+if(trim($_POST["username"])==""){
+    $_SESSION["errorUsr"]="Please enter a screen name !";
     header("Location: ".$homepage);
-
+}
+else if(strlen(trim($_POST["username"])) > 16){
+    $_SESSION["errorUsr"]="Screen name too long, screen name needs to be 16 characters or less !";
+    header("Location: ".$homepage);
 }
 else{
     $_SESSION["nick"] = $_POST["username"];
-
     /*Starting new session*/
     if(isset($_POST['sessionStart'])){
     	$lengthOfID = 8;
@@ -62,6 +64,4 @@ else{
         }
     }
 }
-
-
 ?>

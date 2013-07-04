@@ -48,7 +48,7 @@ if(isset($_SESSION["errorURL"])){
 					<div class="control-group">
 						<div class="input-prepend" style="width: 80%;">
 							<span class="add-on" style="padding: 0.5em">Screen name&nbsp;&nbsp;&nbsp;</span>
-							<input type="text" name="username" id="username" placeholder="Enter screen name here"></input>
+							<input type="text" name="username" id="username" placeholder="Enter screen name here" maxlength="16" ></input>
 						</div>
 					</div>
 					<?php if($directURLFlag == false){ 
@@ -95,7 +95,7 @@ if(isset($_SESSION["errorURL"])){
 				$("input").attr('disabled', 'disabled');
 			}
 			if (typeof io == 'undefined') {  
-			    $("#warningArea").html("<p class='errorSpace'><b>Sorry, there seems to be a problem with our servers, please refresh this page. If this problem persists, please try again after some time, we are trying to fix the problem.</b></p>");
+			    $("#warningArea").html("<p class='errorSpace'><b>Sorry, we are unable to reach our servers. Please check if your firewall is blocking websocket connections.</b></p>");
 			    $("button").attr('disabled', 'disabled');
 			    $("input").attr('disabled', 'disabled');
 			}

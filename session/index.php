@@ -52,7 +52,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     <!-- Sidebar -->
 
     <div id="sideyBar" class="noisy_net">
-    	<div class="logo"><img style="margin: auto;" src="../res/logo.png" /></div>
+    	<div class="logo"><a href="<?php echo $homepage; ?>"><img style="margin: auto;" src="../res/logo.png" /></a></div>
     	<div class="grey_text sideyItem">
 			<h6>Videos in queue: <span id="inQueue">0</span></h6>
 		</div>
@@ -86,7 +86,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 			<!-- Overlay div -->
 			<div id="searchStuff" style="display: none;">
 				<div id="container">
-					<div class="jumbotron">
+					<div class="jumbotron debut_light">
 						<div class="row-fluid">
 							<div class="offset2 span6" ><input class="btn_padding full_width" type="text" placeholder="Search query or youtube URL here..." id="searchTerm" /></div>
 							<div class="span2" ><button class="btn btn-inverse push_up_3px"id="searchThis" ><i class="icon-search icon-white"></i> Search</button></div>
@@ -121,9 +121,9 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 						<button id="exportPl" class="btn btn-inverse span4 offset2">Export this playlist </button>
 					</div>
 					<div>
-						...<br>
+					<!--...<br>
 						Space for more stuffs<br>
-						...<br>
+						...<br>-->
 
 							
 					</div>
@@ -143,7 +143,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 				  		</div>
 					</div>
 					<div>
-						<textarea cols=2 class="thick_border" style="border-radius: 0px;" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" /></textarea>
+						<textarea cols=2 class="thick_border" style="border-radius: 0px;" id="chatBox" placeholder="Write message here...." value="Connecting to chat server..." disabled="disabled" maxlength=140 /></textarea>
 					</div>
 				</div>
 			</div> 

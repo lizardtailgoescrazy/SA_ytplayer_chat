@@ -123,6 +123,12 @@ textarea {
 	#board p:nth-child(even){
 		background: #F1F1F1;
 	}
+
+	#warningArea{
+		background: rgba(255,255,255,0.15);
+		padding: 0.25em;
+		border-radius: 0.25em;
+	}
 	
 	
 /* Classes for CSS */
@@ -259,6 +265,10 @@ textarea {
 
 	.noisy_net{
 		background: url(../res/noisy_net.png);
+	}
+
+	.debut_light{
+		background: url(../res/debut_light.png);
 	}
 	
 	.push_down{
