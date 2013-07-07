@@ -4,6 +4,9 @@ var getNext;
 var seek = -1;
 var currentDJ = null;
 
+/******************************************
+	browser events
+*******************************************/
 window.onbeforeunload = function (e) {
   	var message = "Do you really want to exit the chat session ? You will be logged out automatically.",
   	e = e || window.event;
@@ -33,29 +36,73 @@ $(window).resize(function() {
 	blockYtplayer();
 });
 
-function amITheDJ(){
-	logThis("Checking if I'm the DJ");
-	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
-		logThis("Yes, its me !");
-		$("#ifImTheDJ").removeProp("disabled");
+/******************************************
+	youtube api events
+*******************************************/
+function onPlayerReady() {
+	logThis("Youtube player is ready !");
+}
+
+function onYouTubePlayerAPIReady() {
+	logThis("Yes, youtube API ready.");
+	//Activate player controls
+	$("#searchButton").html("Add video to queue");
+	$("#searchButton").removeAttr("disabled");
+
+	if(canWebsocket){
+		doThings();
 	}
 	else{
-		$("#ifImTheDJ").prop("disabled",true);
+		checkPlaylist = setInterval(doThings, 2000);
 	}
 }
 
-function skipThis(){
-	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
-		logThis("Init-ing the process to skip this video");
-		var msg = {
-		    type: "control",
-		    operation: "skipToNext",
-		    step: "init"
-		};
+function onPlayerStateChange(newState) {
+	//alert(player.getPlayerState());
+	if ( player.getPlayerState() == 0 ) {
+		$.ajax({
+			url: "next.php?cPlay="+currentlyPlaying,
+			async: false,
+			cache: false,
+			success: function(response){
+				//Do nothing
+			}
+		});
 		if(canWebsocket){
-			socket.emit('control',JSON.stringify(msg));
+			readForNext();
+		}
+		else{
+			getNext = setInterval(readForNext, 1000);
 		}
 	}
+	else if(player.getPlayerState() == 1){
+		logThis("State 1 ot a seek value of " + seek);
+		if(seek > 0){
+			player.seekTo(seek + 3, true);
+			seek = -1;
+		}
+	}
+}
+
+function prepYtplayerDiv(){
+	var divPlayer = $("#ytplayer");
+	var w = divPlayer.width();
+	var h = ((9/16)*w);
+	divPlayer.height(h);
+}
+
+function blockYtplayer(){
+	var bubble = $("#bubble");
+	var divPlayer = $("#ytplayer");
+	var posYtplayer = divPlayer.position();
+
+	bubble.css({
+	    "position":"absolute", 
+	    "top": posYtplayer.top + "px",
+	    "left": posYtplayer.left + "px",
+	});
+	bubble.width(divPlayer.width());
+	bubble.height(divPlayer.height());
 }
 
 function makeControlsLive(){
@@ -101,38 +148,31 @@ function makeControlsLive(){
 	});
 }
 
-function prepYtplayerDiv(){
-	var divPlayer = $("#ytplayer");
-	var w = divPlayer.width();
-	var h = ((9/16)*w);
-	divPlayer.height(h);
-}
-
-function blockYtplayer(){
-	var bubble = $("#bubble");
-	var divPlayer = $("#ytplayer");
-	var posYtplayer = divPlayer.position();
-
-	bubble.css({
-	    "position":"absolute", 
-	    "top": posYtplayer.top + "px",
-	    "left": posYtplayer.left + "px",
-	});
-	bubble.width(divPlayer.width());
-	bubble.height(divPlayer.height());
-}
-
-function onYouTubePlayerAPIReady() {
-	logThis("Yes, youtube API ready.");
-	//Activate player controls
-	$("#searchButton").html("Add video to queue");
-	$("#searchButton").removeAttr("disabled");
-
-	if(canWebsocket){
-		doThings();
+/******************************************
+	playlist events
+*******************************************/
+function amITheDJ(){
+	logThis("Checking if I'm the DJ");
+	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
+		logThis("Yes, its me !");
+		$("#ifImTheDJ").removeProp("disabled");
 	}
 	else{
-		checkPlaylist = setInterval(doThings, 2000);
+		$("#ifImTheDJ").prop("disabled",true);
+	}
+}
+
+function skipThis(){
+	if(trimStuff(sessionUsername) === trimStuff(currentDJ)){
+		logThis("Init-ing the process to skip this video");
+		var msg = {
+		    type: "control",
+		    operation: "skipToNext",
+		    step: "init"
+		};
+		if(canWebsocket){
+			socket.emit('control',JSON.stringify(msg));
+		}
 	}
 }
 
@@ -145,6 +185,69 @@ function getInQueue(){
 			setInQueue(response);
 		}
 		
+	});
+}
+
+function doThings(){
+	logThis("This is the doThings function");
+	$.ajax({
+		url: "read_file.php?mode=entry",
+		cache: false,
+		async: false,
+		success: function(response){
+			if(response == "ERROR_1"){
+				$("#message").html("Nothing to play, add a video to the playlist...!");
+				playlistState = "ERROR_1";
+			}
+			else if(response == "ERROR_2"){
+				$("#message").html("Playlist finished, please add more videos...!");
+				playlistState = "ERROR_2";
+			}
+			else{
+				var bit = response.split(';');
+				seek = parseInt(bit[0]);
+				logThis("Got a seek value of " + seek);
+				currentlyPlaying = bit[1];
+				currentDJ = bit[2];		
+				logThis("Fetching video title...!");
+				$.ajax({
+				    url: "http://gdata.youtube.com/feeds/api/videos/"+currentlyPlaying+"?v=2&alt=json",
+				    dataType: "jsonp",
+				    success: function (data){
+				    	$("#message").html("&#9658; " + data.entry.title.$t);
+						setCurrentDJ(currentDJ);
+						},
+					error: function(data){
+						logThis("youtube request failed with "+data);
+					}
+				});
+				var h = ($("#ytplayer").width()*(9/16));
+				player = new YT.Player('ytplayer', {
+					   height: h,
+					   videoId: currentlyPlaying,
+					   playerVars: {
+					   	wmode: 'opaque',
+					   	autoplay: '1',
+					   	vq: 'small',
+					   	controls: '0',
+					   	iv_load_policy: '3',
+					   	rel: '0'
+				   	},
+					events: {
+							'onReady': onPlayerReady,
+					    	'onStateChange': onPlayerStateChange
+							}
+				});
+				makeControlsLive();
+				playlistState = "AYOK";
+				if(canWebsocket == false){
+					clearInterval(checkPlaylist);
+				}
+				amITheDJ();
+				blockYtplayer();
+				getInQueue();
+			}						
+	  	},
 	});
 }
 
@@ -192,93 +295,6 @@ function readForNext(){
 			}
 			amITheDJ();
 			getInQueue();
-	  	},
-	});
-}
-
-function onPlayerStateChange(newState) {
-	//alert(player.getPlayerState());
-	if ( player.getPlayerState() == 0 ) {
-		$.ajax({
-			url: "next.php?cPlay="+currentlyPlaying,
-			async: false,
-			cache: false,
-			success: function(response){
-				//Do nothing
-			}
-		});
-		if(canWebsocket){
-			readForNext();
-		}
-		else{
-			getNext = setInterval(readForNext, 1000);
-		}
-	}
-	else if(player.getPlayerState() == 3){
-		if(seek > 0){
-			player.seekTo(seek + 3, true);
-			seek = -1;
-		}
-	}
-}
-
-function doThings(){
-	logThis("This is the doThings function");
-	$.ajax({
-		url: "read_file.php?mode=entry",
-		cache: false,
-		async: false,
-		success: function(response){
-			if(response == "ERROR_1"){
-				$("#message").html("Nothing to play, add a video to the playlist...!");
-				playlistState = "ERROR_1";
-			}
-			else if(response == "ERROR_2"){
-				$("#message").html("Playlist finished, please add more videos...!");
-				playlistState = "ERROR_2";
-			}
-			else{
-				var bit = response.split(';');
-				seek = parseInt(bit[0]);
-				currentlyPlaying = bit[1];
-				currentDJ = bit[2];		
-				logThis("Fetching video title...!");
-				$.ajax({
-				    url: "http://gdata.youtube.com/feeds/api/videos/"+currentlyPlaying+"?v=2&alt=json",
-				    dataType: "jsonp",
-				    success: function (data){
-				    	$("#message").html("&#9658; " + data.entry.title.$t);
-						setCurrentDJ(currentDJ);
-						},
-					error: function(data){
-						logThis("youtube request failed with "+data);
-					}
-				});
-				var h = ($("#ytplayer").width()*(9/16));
-				player = new YT.Player('ytplayer', {
-					   height: h,
-					   videoId: currentlyPlaying,
-					   playerVars: {
-					   	wmode: 'opaque',
-					   	autoplay: '1',
-					   	vq: 'small',
-					   	controls: '0',
-					   	iv_load_policy: '3',
-					   	rel: '0'
-				   	},
-					events: {
-					    	'onStateChange': onPlayerStateChange
-							}
-				});
-				makeControlsLive();
-				playlistState = "AYOK";
-				if(canWebsocket == false){
-					clearInterval(checkPlaylist);
-				}
-				amITheDJ();
-				blockYtplayer();
-				getInQueue();
-			}						
 	  	},
 	});
 }

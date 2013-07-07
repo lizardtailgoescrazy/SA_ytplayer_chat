@@ -123,12 +123,6 @@ textarea {
 	#board p:nth-child(even){
 		background: #F1F1F1;
 	}
-
-	#warningArea{
-		background: rgba(255,255,255,0.15);
-		padding: 0.25em;
-		border-radius: 0.25em;
-	}
 	
 	
 /* Classes for CSS */
@@ -146,7 +140,6 @@ textarea {
 	.jumbotron {
 		text-align: center;
 		padding: 20px;
-		/*background: url(../res/debut_light.png);*/
 	}
 
 	.jumbotron_margin {
@@ -172,6 +165,12 @@ textarea {
 		/* Rules below not implemented in browsers yet */
 		-o-user-select: none;
 		user-select: none;
+	}
+
+	.black_box{
+		background: black;
+		padding: 0.25em;
+		border-radius: 0.25em;
 	}
 
 	.vol_controls:hover{

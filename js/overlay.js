@@ -32,12 +32,15 @@ function searchThings(){
 	//var overlayDisplay = '';
 	if($("#searchStuff").css('display') == "none"){
 		$("#searchStuff").css('display', "");
-		//$("#searchStuff").html(overlayDisplay);
+		$("#searchTerm").focus();
+
+
 		$("#overlayClose").click(function(){
 			$("#searchResultDiv").html("");
 			$("#searchTerm").val("");
 			$("#searchStuff").css('display', "none");
 		});
+		
 		//On click handler for search button
 		$("#searchThis").ready(function(){
 			$("#searchResultDiv").html("");

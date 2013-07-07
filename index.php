@@ -12,14 +12,14 @@ $usernameMsg = "";
 $urlMsg = "";
 
 if(isset($_SESSION["errorUsr"])){
-		$usernameMsg = $usernameMsg."<div class=\"errorSpace\">";
+		$usernameMsg = $usernameMsg."<div class=\"errorSpace black_box\">";
 		$usernameMsg = $usernameMsg."**".$_SESSION["errorUsr"];
 		$usernameMsg = $usernameMsg."</div>";
 		unset($_SESSION["errorUsr"]);
 	}
 
 if(isset($_SESSION["errorURL"])){
-		$urlMsg = $urlMsg."<div class=\"errorSpace\">";
+		$urlMsg = $urlMsg."<div class=\"errorSpace black_box\">";
 		$urlMsg = $urlMsg."**".$_SESSION["errorURL"];
 		$urlMsg = $urlMsg."</div>";
 		unset($_SESSION["errorURL"]);
@@ -90,12 +90,12 @@ if(isset($_SESSION["errorURL"])){
 		<script src="http://54.218.12.208:1337/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			if (checkForWebsockets() == false){
-				$("#warningArea").html("<p class='errorSpace'><b>Sorry, your browser does not support websockets. Please use the latest version of Firefox/Chrome/Safari to use this web app.</b></p>");
+				$("#warningArea").html("<p class='errorSpace black_box'><b>Sorry, your browser does not support websockets. Please use the latest version of Firefox/Chrome/Safari to use this web app.</b></p>");
 				$("button").attr('disabled', 'disabled');
 				$("input").attr('disabled', 'disabled');
 			}
 			if (typeof io == 'undefined') {  
-			    $("#warningArea").html("<p class='errorSpace'><b>Sorry, we are unable to reach our servers. Please check if your firewall is blocking websocket connections.</b></p>");
+			    $("#warningArea").html("<p class='errorSpace black_box'><b>Sorry, we are unable to reach our servers. Please check if your firewall is blocking websocket connections.</b></p>");
 			    $("button").attr('disabled', 'disabled');
 			    $("input").attr('disabled', 'disabled');
 			}
