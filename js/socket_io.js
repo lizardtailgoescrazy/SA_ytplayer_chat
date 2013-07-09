@@ -92,7 +92,7 @@ $(function () {
 	}
 	else{
 
-		socket = io.connect('http://54.218.12.208:1337');
+		socket = io.connect('http://54.218.12.208:8080');
 		//socket = io.connect('http://arbiter:1337');
 
 
