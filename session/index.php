@@ -43,8 +43,8 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 		<div class="navbar-inner noisy_net">
 			<div class="row-fluid">
 				<div class="span3" style="padding: 0.5em 0px 0px 1em;" >...</div>
-				<div class="span6"><h6 class="grey_text">Session URL: <?php echo $sessionURL; ?>&nbsp&nbsp <button class="btn btn-small push_up_3px" id="copy"> Copy </button></h6></div>
-				<div class="span3"><h6 class="grey_text">Logged in as  <i class="icon-user icon-white"></i> <?php print($_SESSION["nick"]); ?></h6></div>
+				<div class="span6"><h6 class="grey_text">Room Address: <?php echo $sessionURL; ?>&nbsp&nbsp <button class="btn btn-small push_up_3px" id="copy"> Copy </button></h6></div>
+				<div class="span3"><h6 class="grey_text">Logged in as:  <i class="icon-user icon-white"></i> <?php print($_SESSION["nick"]); ?></h6></div>
 			</div>
 		</div>
     </div>
@@ -114,7 +114,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 					</div>
 					
 					<div id="builder"class="margin_1em row-fluid">
-						<button id="searchButton" class="btn btn-inverse span4 offset2" onclick='searchThings();' disabled="disabled">Initalizing...</button>
+						<button id="searchButton" class="btn btn-primary span4 offset2" onclick='searchThings();' disabled="disabled">Initalizing...</button>
 						<button id="ifImTheDJ"    class="btn btn-inverse span4" onclick="skipThis();"     disabled="disabled">Skip this video</button>
 					</div>
 					<div id="builder"class="margin_1em row-fluid">
