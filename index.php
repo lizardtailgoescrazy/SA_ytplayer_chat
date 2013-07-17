@@ -90,7 +90,7 @@ if(isset($_SESSION["errorURL"])){
 		<script src="http://54.218.12.208:8080/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			if (checkForWebsockets() == false){
-				$("#warningArea").html("<p class='errorSpace black_box'><b>Sorry, your browser does not support websockets. Please use the latest version of Firefox/Chrome/Safari to use this web app.</b></p>");
+				$("#warningArea").html("<div class='alert alert-error'><strong>Oh no! Your browser does not support websockets. Please try with the latest version of Firefox/Chrome/Safari.</div>");
 				$("button").attr('disabled', 'disabled');
 				$("input").attr('disabled', 'disabled');
 			}
