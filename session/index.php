@@ -101,7 +101,9 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 			<div class="row-fluid">				
 				<!-- Video div -->
 			  	<div class="span6" id="video">
-					<div id="ytplayer">...</div>
+					<div id="ytplayer">
+						<img src="../res/add_first_video.png" />
+					</div>
 					<div class="soft_box margin_1em grey_text"><h6 id="message">Initalizing...<h6></div>
 				
 					<!-- Volume Controls -->
