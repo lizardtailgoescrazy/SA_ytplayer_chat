@@ -87,7 +87,7 @@ if(isset($_SESSION["errorURL"])){
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
 		<script type="text/javascript" src="js/helper.js"></script>
 		<!--<script src="http://arbiter:1337/socket.io/socket.io.js"></script>-->
-		<script src="http://54.218.12.208:8080/socket.io/socket.io.js"></script>
+		<script src="http://ec2-54-213-34-40.us-west-2.compute.amazonaws.com:8080/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			if (checkForWebsockets() == false){
 				$("#warningArea").html("<div class='alert alert-error'><strong>Oh no! Your browser does not support websockets. Please try with the latest version of Firefox/Chrome/Safari.</div>");

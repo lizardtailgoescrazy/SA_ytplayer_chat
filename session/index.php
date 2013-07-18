@@ -154,7 +154,7 @@ $sessionURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 
 	<!-- Le javascript
 	================================================== -->
-	<script src="http://54.218.12.208:8080/socket.io/socket.io.js"></script>
+	<script src="http://ec2-54-213-34-40.us-west-2.compute.amazonaws.com:8080/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="ZeroClipboard.js"></script>
 	<script type="text/javascript" src="../js/helper.js"></script>
 	<script type="text/javascript" src="../js/ytplayerStuff.js"></script>
