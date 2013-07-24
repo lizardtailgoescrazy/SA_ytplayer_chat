@@ -12,7 +12,7 @@
 	function constructChain(){
 		$searchTerm = $_GET["q"];
 		$searchTerm = str_replace(" ", "+", $searchTerm);
-		$tempUrl = "http://gdata.youtube.com/feeds/api/videos?q=".$searchTerm."&orderby=viewCount&start-index=11&max-results=12&v=2";
+		$tempUrl = "http://gdata.youtube.com/feeds/api/videos?q=".$searchTerm."&orderby=viewCount&start-index=1&max-results=12&v=2";
 		//$tempUrl = "http://gdata.youtube.com/feeds/api/videos/".$url."?v=2";
 		$content = file_get_contents($tempUrl);
 		$xml = simplexml_load_string($content);
