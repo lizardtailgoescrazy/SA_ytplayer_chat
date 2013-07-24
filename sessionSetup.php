@@ -26,9 +26,9 @@ else{
         file_put_contents($nextDir."/".$randomString."/currentlyPlaying", 0, LOCK_EX);
         file_put_contents($nextDir."/".$randomString."/peopleHere", 1, LOCK_EX);
 
-        chmod($nextDir."/".$randomString."/no", 0777);
-        chmod($nextDir."/".$randomString."/currentlyPlaying", 0777);
-        chmod($nextDir."/".$randomString."/peopleHere", 0777);
+        //chmod($nextDir."/".$randomString."/no", 0777);
+        //chmod($nextDir."/".$randomString."/currentlyPlaying", 0777);
+        //chmod($nextDir."/".$randomString."/peopleHere", 0777);
 
         $_SESSION["sno"] = $randomString;
         //print("<br>Your session Id is $randomString.");
