@@ -43,5 +43,8 @@
 			//do nothing
 		}
 	}
-	constructChain();
+	session_start();
+	if(isset($_SESSION["sid"])){
+		constructChain();
+	}
 ?>
